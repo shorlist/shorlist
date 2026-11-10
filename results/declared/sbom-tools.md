@@ -1,4 +1,4 @@
-**sbom-tools 0.3.0** on the ShorList declaration axis (60 rows, rows sha256 `fd4daaf39186`, fingerprint `89f553f06c787d02`)
+**sbom-tools 0.3.0** on the ShorList declaration axis (60 rows, rows sha256 `fd4daaf39186`, fingerprint `241b540d18474e32`)
 
 Of 33 non-consistent pairs on the ShorList declaration axis, sbom-tools 0.3.0 reproduces 3 verdicts (0 partial); of 25 consistent pairs (20 of them decoys), it raises 12 false alarms. 2 SSH rows are not scored (no_spec_structure, CycloneDX #1162).
 
@@ -35,4 +35,30 @@ Of 33 non-consistent pairs on the ShorList declaration axis, sbom-tools 0.3.0 re
 |---|---:|---:|---:|---:|---:|---:|---:|
 | cipher_suite | 25 | 2 | 0 | 12 | 3 | 8 | 0 |
 | group | 33 | 1 | 0 | 18 | 9 | 5 | 0 |
+
+*By exposure label*
+
+| exposure | n | hit | partial | miss | false_alarm | ok | tool_error |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| hides_exposure | 8 | 1 | 0 | 7 | 0 | 0 | 0 |
+| immaterial | 44 | 2 | 0 | 17 | 12 | 13 | 0 |
+| overstates_protection | 2 | 0 | 0 | 2 | 0 | 0 | 0 |
+| understates | 4 | 0 | 0 | 4 | 0 | 0 | 0 |
+
+*Listener preference (hybrid and classical offered together)*
+
+| listener | hybrid first | classical first | harvest path |
+|---|---|---|---|
+| L-APA-1 | X25519MLKEM768 | secp256r1 | yes |
+| L-APA-2 | secp256r1 | secp256r1 | yes |
+| L-APA-3 | no handshake | no handshake | no |
+| L-NGX-1 | X25519MLKEM768 | X25519MLKEM768 | no |
+| L-NGX-2 | X25519MLKEM768 | secp256r1 | yes |
+| L-NGX-3 | no handshake | no handshake | no |
+| L-NGX-4 | no handshake | no handshake | no |
+| L-SSV-1 | no handshake | no handshake | no |
+| L-SSV-2 | no handshake | no handshake | no |
+| L-SSV-3 | secp256r1 | secp256r1 | yes |
+| L-SSV-4 | X25519MLKEM768 | secp256r1 | yes |
+| L-SSV-5 | TLSv1.2, no offered group | TLSv1.2, no offered group | yes |
 

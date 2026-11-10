@@ -44,7 +44,7 @@
  },
  "generator": {
   "name": "shorlist",
-  "version": "0.1.0"
+  "version": "0.3.0"
  },
  "tool": {
   "name": "sbom-tools",
@@ -208,6 +208,226 @@
    "tool_error": 0
   }
  },
+ "by_exposure": {
+  "hides_exposure": {
+   "n": 8,
+   "hit": 1,
+   "partial": 0,
+   "miss": 7,
+   "false_alarm": 0,
+   "ok": 0,
+   "tool_error": 0
+  },
+  "immaterial": {
+   "n": 44,
+   "hit": 2,
+   "partial": 0,
+   "miss": 17,
+   "false_alarm": 12,
+   "ok": 13,
+   "tool_error": 0
+  },
+  "overstates_protection": {
+   "n": 2,
+   "hit": 0,
+   "partial": 0,
+   "miss": 2,
+   "false_alarm": 0,
+   "ok": 0,
+   "tool_error": 0
+  },
+  "understates": {
+   "n": 4,
+   "hit": 0,
+   "partial": 0,
+   "miss": 4,
+   "false_alarm": 0,
+   "ok": 0,
+   "tool_error": 0
+  }
+ },
+ "preference": {
+  "L-APA-1": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": "X25519MLKEM768",
+    "protocol": "TLSv1.3",
+    "class": "hybrid"
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": "secp256r1",
+    "protocol": "TLSv1.3",
+    "class": "classical"
+   },
+   "harvest_path": true
+  },
+  "L-APA-2": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": "secp256r1",
+    "protocol": "TLSv1.2",
+    "class": "classical"
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": "secp256r1",
+    "protocol": "TLSv1.2",
+    "class": "classical"
+   },
+   "harvest_path": true
+  },
+  "L-APA-3": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "harvest_path": false
+  },
+  "L-NGX-1": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": "X25519MLKEM768",
+    "protocol": "TLSv1.3",
+    "class": "hybrid"
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": "X25519MLKEM768",
+    "protocol": "TLSv1.3",
+    "class": "hybrid"
+   },
+   "harvest_path": false
+  },
+  "L-NGX-2": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": "X25519MLKEM768",
+    "protocol": "TLSv1.3",
+    "class": "hybrid"
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": "secp256r1",
+    "protocol": "TLSv1.3",
+    "class": "classical"
+   },
+   "harvest_path": true
+  },
+  "L-NGX-3": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "harvest_path": false
+  },
+  "L-NGX-4": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "harvest_path": false
+  },
+  "L-SSV-1": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "harvest_path": false
+  },
+  "L-SSV-2": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": null,
+    "protocol": null,
+    "class": null
+   },
+   "harvest_path": false
+  },
+  "L-SSV-3": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": "secp256r1",
+    "protocol": "TLSv1.2",
+    "class": "classical"
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": "secp256r1",
+    "protocol": "TLSv1.2",
+    "class": "classical"
+   },
+   "harvest_path": true
+  },
+  "L-SSV-4": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": "X25519MLKEM768",
+    "protocol": "TLSv1.3",
+    "class": "hybrid"
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": "secp256r1",
+    "protocol": "TLSv1.3",
+    "class": "classical"
+   },
+   "harvest_path": true
+  },
+  "L-SSV-5": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": null,
+    "protocol": "TLSv1.2",
+    "class": "classical"
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": null,
+    "protocol": "TLSv1.2",
+    "class": "classical"
+   },
+   "harvest_path": true
+  }
+ },
  "rows_scored": [
   {
    "id": "SLD-0001",
@@ -220,6 +440,7 @@
    "reason": "removed component 'ML-KEM-768 hybrid with X25519 (RFC 10024)' (alg/hybrid); removed component 'ML-KEM-768' (alg/mlkem768); removed component 'X25519' (alg/x25519)",
    "server": "nginx",
    "listener": "L-NGX-1",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -261,6 +482,7 @@
    "reason": "",
    "server": "nginx",
    "listener": "L-NGX-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -274,6 +496,7 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -287,6 +510,7 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-1",
+   "exposure": "understates",
    "tool_findings": []
   },
   {
@@ -300,6 +524,7 @@
    "reason": "",
    "server": "nginx",
    "listener": "L-NGX-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -313,6 +538,7 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -326,6 +552,7 @@
    "reason": "removed component 'EC' (alg/ec)",
    "server": "nginx",
    "listener": "L-NGX-2",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -349,6 +576,7 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-2",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -362,6 +590,7 @@
    "reason": "",
    "server": "nginx",
    "listener": "L-NGX-2",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -375,6 +604,9 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-2",
+   "exposure": "hides_exposure",
+   "key_exchange": "ECDH",
+   "forward_secrecy": true,
    "tool_findings": []
   },
   {
@@ -388,6 +620,7 @@
    "reason": "removed component 'TLSv1.2 (recovery console, not built in)' (proto/tls12-recovery)",
    "server": "nginx",
    "listener": "L-NGX-2",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -414,6 +647,7 @@
    "reason": "removed component 'ECDH' (alg/ecdh)",
    "server": "nginx",
    "listener": "L-NGX-3",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -437,6 +671,7 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-3",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -450,6 +685,7 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-3",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -463,6 +699,7 @@
    "reason": "",
    "server": "nginx",
    "listener": "L-NGX-3",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -476,6 +713,7 @@
    "reason": "removed component 'SecP256r1MLKEM768 hybrid' (alg/hyb1); removed component 'SecP384r1MLKEM1024 hybrid' (alg/hyb2); removed component 'ML-KEM-1024' (alg/mlkem1024); removed component 'ML-KEM-768' (alg/mlkem768); removed component 'ECDH P-256' (alg/p256); removed component 'ECDH P-384' (alg/p384)",
    "server": "nginx",
    "listener": "L-NGX-4",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -544,6 +782,7 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-4",
+   "exposure": "understates",
    "tool_findings": []
   },
   {
@@ -557,6 +796,7 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-4",
+   "exposure": "overstates_protection",
    "tool_findings": []
   },
   {
@@ -570,6 +810,7 @@
    "reason": "nothing reported in the category",
    "server": "nginx",
    "listener": "L-NGX-4",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -583,6 +824,7 @@
    "reason": "",
    "server": "apache",
    "listener": "L-APA-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -596,6 +838,7 @@
    "reason": "nothing reported in the category",
    "server": "apache",
    "listener": "L-APA-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -609,6 +852,7 @@
    "reason": "nothing reported in the category",
    "server": "apache",
    "listener": "L-APA-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -622,6 +866,7 @@
    "reason": "removed component 'TLSv1.3 (FIPS build profile, not shipped)' (proto/tls13-fips)",
    "server": "apache",
    "listener": "L-APA-1",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -648,6 +893,7 @@
    "reason": "nothing reported in the category",
    "server": "apache",
    "listener": "L-APA-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -661,6 +907,7 @@
    "reason": "removed component 'EC' (alg/ec); removed component 'X25519' (alg/x25519)",
    "server": "apache",
    "listener": "L-APA-2",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -693,6 +940,7 @@
    "reason": "nothing reported in the category",
    "server": "apache",
    "listener": "L-APA-2",
+   "exposure": "hides_exposure",
    "tool_findings": []
   },
   {
@@ -706,6 +954,7 @@
    "reason": "",
    "server": "apache",
    "listener": "L-APA-2",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -719,6 +968,9 @@
    "reason": "nothing reported in the category",
    "server": "apache",
    "listener": "L-APA-2",
+   "exposure": "hides_exposure",
+   "key_exchange": "RSA",
+   "forward_secrecy": false,
    "tool_findings": []
   },
   {
@@ -732,6 +984,7 @@
    "reason": "nothing reported in the category",
    "server": "apache",
    "listener": "L-APA-2",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -745,6 +998,7 @@
    "reason": "removed component 'ML-KEM-768' (alg/mlkem768)",
    "server": "apache",
    "listener": "L-APA-3",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -768,6 +1022,7 @@
    "reason": "nothing reported in the category",
    "server": "apache",
    "listener": "L-APA-3",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -781,6 +1036,7 @@
    "reason": "nothing reported in the category",
    "server": "apache",
    "listener": "L-APA-3",
+   "exposure": "understates",
    "tool_findings": []
   },
   {
@@ -794,6 +1050,7 @@
    "reason": "",
    "server": "apache",
    "listener": "L-APA-3",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -807,6 +1064,7 @@
    "reason": "nothing reported in the category",
    "server": "apache",
    "listener": "L-APA-3",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -820,6 +1078,7 @@
    "reason": "",
    "server": "s_server",
    "listener": "L-SSV-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -833,6 +1092,7 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-1",
+   "exposure": "overstates_protection",
    "tool_findings": []
   },
   {
@@ -846,6 +1106,7 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-1",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -859,6 +1120,7 @@
    "reason": "removed component 'ML-KEM' (alg/mlkem)",
    "server": "s_server",
    "listener": "L-SSV-1",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -882,6 +1144,7 @@
    "reason": "",
    "server": "s_server",
    "listener": "L-SSV-2",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -895,6 +1158,7 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-2",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -908,6 +1172,7 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-2",
+   "exposure": "hides_exposure",
    "tool_findings": []
   },
   {
@@ -921,6 +1186,7 @@
    "reason": "",
    "server": "s_server",
    "listener": "L-SSV-2",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -934,6 +1200,7 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-2",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -947,6 +1214,7 @@
    "reason": "removed component 'EC' (alg/ec521)",
    "server": "s_server",
    "listener": "L-SSV-3",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -970,6 +1238,7 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-3",
+   "exposure": "hides_exposure",
    "tool_findings": []
   },
   {
@@ -983,6 +1252,7 @@
    "reason": "",
    "server": "s_server",
    "listener": "L-SSV-3",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -996,6 +1266,9 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-3",
+   "exposure": "hides_exposure",
+   "key_exchange": "ECDH",
+   "forward_secrecy": true,
    "tool_findings": []
   },
   {
@@ -1009,6 +1282,7 @@
    "reason": "removed component 'X25519MLKEM768' (alg/h1); removed component 'SecP256r1MLKEM768' (alg/h2); removed component 'SecP384r1MLKEM1024' (alg/h3); removed component 'ML-KEM-1024' (alg/mlkem1024); removed component 'ML-KEM-768' (alg/mlkem768); removed component 'ECDH P-256' (alg/p256); removed component 'ECDH P-384' (alg/p384); removed component 'X25519' (alg/x25519)",
    "server": "s_server",
    "listener": "L-SSV-4",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -1095,6 +1369,7 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-4",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -1108,6 +1383,7 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-4",
+   "exposure": "understates",
    "tool_findings": []
   },
   {
@@ -1121,6 +1397,7 @@
    "reason": "removed component 'TLSv1.2 (legacy RSA profile, removed in 4.0)' (proto/tls12-legacy); removed component 'TLSv1.2 (legacy RSA profile, removed in 4.0)' (proto/tls12-legacy)",
    "server": "s_server",
    "listener": "L-SSV-4",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -1159,6 +1436,9 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-5",
+   "exposure": "hides_exposure",
+   "key_exchange": "RSA",
+   "forward_secrecy": false,
    "tool_findings": []
   },
   {
@@ -1172,6 +1452,7 @@
    "reason": "",
    "server": "s_server",
    "listener": "L-SSV-5",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -1185,6 +1466,7 @@
    "reason": "nothing reported in the category",
    "server": "s_server",
    "listener": "L-SSV-5",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -1198,6 +1480,7 @@
    "reason": "",
    "server": "s_server",
    "listener": "L-SSV-5",
+   "exposure": "immaterial",
    "tool_findings": []
   },
   {
@@ -1211,6 +1494,9 @@
    "reason": "",
    "server": "apache",
    "listener": "L-APA-3",
+   "exposure": "hides_exposure",
+   "key_exchange": "ECDH",
+   "forward_secrecy": true,
    "tool_findings": [
     {
      "verdict": "undeclared",
@@ -1237,6 +1523,7 @@
    "reason": "",
    "server": "nginx",
    "listener": "L-NGX-1",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -1263,6 +1550,7 @@
    "reason": "",
    "server": "nginx",
    "listener": "L-NGX-3",
+   "exposure": "immaterial",
    "tool_findings": [
     {
      "verdict": "overclaimed",
@@ -1296,10 +1584,10 @@
    "listener": "-"
   }
  ],
- "fingerprint": "89f553f06c787d02f07a87761f697b367ef4b4c7015c985d33bc2aff3c25561c",
+ "fingerprint": "241b540d18474e32a733d7ead8609a5caa8add0c69d6b4d13888e0297cb017b2",
  "fingerprint_rule": "sha256(canonical JSON {rows_sha256, generator_version, tool_version, rows:[[id,outcome,reason]...]})",
  "run": {
-  "at": "2026-11-07T12:34:47Z",
+  "at": "2026-11-10T12:38:02Z",
   "python": "3.12.3",
   "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39"
  },

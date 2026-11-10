@@ -1,6 +1,6 @@
-**Of 14 positive rows planted as live servers from ShorList 0.2.0, testssl.sh 3.2.5 reports the expected wire item for 14; of 5 removal/ban decoys it reports 0 as offered. Rows the reference client could not confirm on the wire are not scored.**
+**Of 14 positive rows planted as live servers from ShorList 0.3.0, testssl.sh 3.2.5 reports the expected wire item for 14; of 5 removal/ban decoys it reports 0 as offered. Rows the reference client could not confirm on the wire are not scored.**
 
-wire.yaml sha256 `01304235d689247f…` · catalogue 0.2.0 sha256 `5d0e18007d740318…` · generator 0.1.0 · fingerprint `c894e2692feb6099…`
+wire.yaml sha256 `01304235d689247f…` · catalogue 0.3.0 sha256 `084dce514b73060b…` · generator 0.3.0 · fingerprint `113859095fedd3c7…`
 
 | positive rows | hit | miss | false alarm | decoys | ok | false alarm |
 |---|---|---|---|---|---|---|

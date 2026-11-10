@@ -1,11 +1,11 @@
 {
  "result_format": "live-0.1",
  "axis": "network",
- "statement": "Of 23 positive rows planted as live servers from ShorList 0.2.0, ssh-audit v3.9.0 reports the expected wire item for 22; of 7 removal/ban decoys it reports 0 as offered. Rows the reference client could not confirm on the wire are not scored.",
+ "statement": "Of 23 positive rows planted as live servers from ShorList 0.3.0, ssh-audit v3.9.0 reports the expected wire item for 22; of 7 removal/ban decoys it reports 0 as offered. Rows the reference client could not confirm on the wire are not scored.",
  "catalogue": {
   "name": "ShorList",
-  "version": "0.2.0",
-  "sha256": "5d0e18007d740318cb1247303bc1ad957de13f2a349e9e8aeab2cdc2690a6db6"
+  "version": "0.3.0",
+  "sha256": "084dce514b73060b01cf9aa5be50ed72c7f0cfda55eb0f3988c8da732d6a0785"
  },
  "wire": {
   "sha256": "01304235d689247fb6103d6f1e1c0ab2141be1db32071305729d262b7a8b7193",
@@ -40,7 +40,7 @@
  },
  "generator": {
   "name": "shorlist",
-  "version": "0.1.0"
+  "version": "0.3.0"
  },
  "scanner": {
   "adapter": "ssh-audit",
@@ -211,7 +211,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.5
+   "scanner_seconds": 2.7
   },
   {
    "outcome": "miss",
@@ -235,7 +235,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.6
+   "scanner_seconds": 2.8
   },
   {
    "outcome": "hit",
@@ -256,7 +256,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 1.7
+   "scanner_seconds": 2.1
   },
   {
    "outcome": "ok",
@@ -298,7 +298,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.8
+   "scanner_seconds": 2.6
   },
   {
    "outcome": "hit",
@@ -319,7 +319,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.4
+   "scanner_seconds": 2.8
   },
   {
    "outcome": "not_runnable",
@@ -351,7 +351,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.8
+   "scanner_seconds": 2.6
   },
   {
    "outcome": "hit",
@@ -372,7 +372,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 3.0
+   "scanner_seconds": 3.1
   },
   {
    "outcome": "hit",
@@ -447,7 +447,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.7
+   "scanner_seconds": 2.6
   },
   {
    "outcome": "hit",
@@ -468,7 +468,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.6
+   "scanner_seconds": 2.7
   },
   {
    "outcome": "hit",
@@ -489,7 +489,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.6
+   "scanner_seconds": 2.8
   },
   {
    "outcome": "hit",
@@ -531,7 +531,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.7
+   "scanner_seconds": 2.6
   },
   {
    "outcome": "hit",
@@ -552,7 +552,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.6
+   "scanner_seconds": 2.7
   },
   {
    "outcome": "hit",
@@ -573,7 +573,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.6
+   "scanner_seconds": 2.9
   },
   {
    "outcome": "hit",
@@ -636,7 +636,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.6
+   "scanner_seconds": 3.2
   },
   {
    "outcome": "hit",
@@ -657,7 +657,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.8
+   "scanner_seconds": 3.4
   },
   {
    "outcome": "hit",
@@ -699,7 +699,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 3.4
+   "scanner_seconds": 3.2
   },
   {
    "outcome": "ok",
@@ -762,7 +762,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 3.0
+   "scanner_seconds": 2.6
   },
   {
    "outcome": "ok",
@@ -783,7 +783,7 @@
     }
    ],
    "scanner_exit": 3,
-   "scanner_seconds": 2.7
+   "scanner_seconds": 2.8
   },
   {
    "outcome": "not_scored",
@@ -902,10 +902,10 @@
    "scanner_seconds": 2.6
   }
  ],
- "fingerprint": "5e22c7f121c321017b6a14a96e4d14082eabe8896819caf88b2a7b5e9754ed73",
+ "fingerprint": "26cd6cb3c114282b503b7d9b7eb79cdf59c453b34f208a50ce7a03363e983478",
  "fingerprint_rule": "sha256(canonical JSON {wire_sha256, catalogue_sha256, generator_version, scanner_version, images, rows:[[id,outcome,reason]...]})",
  "run": {
-  "at": "2026-11-07T12:12:05Z",
+  "at": "2026-11-10T12:15:22Z",
   "python": "3.12.3",
   "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39"
  },
@@ -965,7 +965,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.5,
+    "seconds": 2.7,
     "observed": [
      [
       "cipher",
@@ -1128,7 +1128,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.6,
+    "seconds": 2.8,
     "observed": [
      [
       "cipher",
@@ -1304,7 +1304,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 1.7,
+    "seconds": 2.1,
     "observed": [
      [
       "cipher",
@@ -1637,7 +1637,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.8,
+    "seconds": 2.6,
     "observed": [
      [
       "cipher",
@@ -1817,7 +1817,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.4,
+    "seconds": 2.8,
     "observed": [
      [
       "cipher",
@@ -1987,7 +1987,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.8,
+    "seconds": 2.6,
     "observed": [
      [
       "cipher",
@@ -2135,7 +2135,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 3.0,
+    "seconds": 3.1,
     "observed": [
      [
       "cipher",
@@ -2443,7 +2443,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.7,
+    "seconds": 2.6,
     "observed": [
      [
       "cipher",
@@ -2617,7 +2617,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.6,
+    "seconds": 2.7,
     "observed": [
      [
       "cipher",
@@ -2771,7 +2771,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.6,
+    "seconds": 2.8,
     "observed": [
      [
       "cipher",
@@ -3047,7 +3047,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.7,
+    "seconds": 2.6,
     "observed": [
      [
       "cipher",
@@ -3185,7 +3185,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.6,
+    "seconds": 2.7,
     "observed": [
      [
       "cipher",
@@ -3323,7 +3323,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.6,
+    "seconds": 2.9,
     "observed": [
      [
       "cipher",
@@ -3737,7 +3737,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.6,
+    "seconds": 3.2,
     "observed": [
      [
       "cipher",
@@ -3877,7 +3877,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.8,
+    "seconds": 3.4,
     "observed": [
      [
       "cipher",
@@ -4173,7 +4173,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 3.4,
+    "seconds": 3.2,
     "observed": [
      [
       "cipher",
@@ -4509,7 +4509,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 3.0,
+    "seconds": 2.6,
     "observed": [
      [
       "cipher",
@@ -4684,7 +4684,7 @@
    },
    "scanner": {
     "exit": 3,
-    "seconds": 2.7,
+    "seconds": 2.8,
     "observed": [
      [
       "cipher",

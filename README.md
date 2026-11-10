@@ -6,8 +6,8 @@ post-quantum ones that replace them.**
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23974515.svg)](https://doi.org/10.5281/zenodo.23974515)
 [![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-lightgrey.svg)](LICENSE-DATA)
 [![Code: Apache-2.0](https://img.shields.io/badge/code-Apache--2.0-blue.svg)](LICENSE)
-[![Version 0.2.0](https://img.shields.io/badge/version-0.2.0-informational.svg)](VERSION)
-[![Rows: 2035](https://img.shields.io/badge/rows-2035-success.svg)](forms/)
+[![Version 0.3.0](https://img.shields.io/badge/version-0.3.0-informational.svg)](VERSION)
+[![Rows: 2099](https://img.shields.io/badge/rows-2099-success.svg)](forms/)
 [![ci](https://github.com/shorlist/shorlist/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/shorlist/shorlist/actions/workflows/ci.yml)
 
 For **scanner vendors**, who want to show what their tool recognises against a public list,
@@ -29,18 +29,18 @@ or loses nothing on the quantum axis for a weak or a defect row.
 
 ```mermaid
 flowchart LR
-    C["ShorList v0.2.0<br/>2035 rows, a primary source on each"] --> Q["quantum<br/>1537 rows (169 decoys)<br/>Shor-vulnerable + post-quantum"]
+    C["ShorList v0.3.0<br/>2099 rows, a primary source on each"] --> Q["quantum<br/>1601 rows (172 decoys)<br/>Shor-vulnerable + post-quantum"]
     C --> W["weak<br/>311 rows (31 decoys)<br/>SHA-1, MD5, 3DES, RSA-1024 …"]
     C --> D["defect<br/>187 rows (25 decoys)<br/>misuse, scored on the CWE"]
 ```
 
-Version **0.2.0** · data **CC BY 4.0** · generator **Apache-2.0** · DOI [10.5281/zenodo.23974515](https://doi.org/10.5281/zenodo.23974515)
+Version **0.3.0** · data **CC BY 4.0** · generator **Apache-2.0** · DOI [10.5281/zenodo.23974515](https://doi.org/10.5281/zenodo.23974515)
 (all versions).
 
 **Contents:** [Quick start](#quick-start) · [Use it](#use-it) · [Why](#why) ·
 [The unit of measure](#the-unit-of-measure) · [What it does not measure](#what-it-does-not-measure) ·
-[Scope of v0.2](#scope-of-v02) · [A row](#a-row) · [Running the generator](#running-the-generator) ·
-[Results](#results) · [Contributing rows](#contributing-rows) ·
+[Scope of v0.3](#scope-of-v03) · [A row](#a-row) · [Running the generator](#running-the-generator) ·
+[Results](#results) · [What changed in 0.3.0](#what-changed-in-030) · [Contributing rows](#contributing-rows) ·
 [Conflict of interest](#conflict-of-interest) · [Citing](#citing) · [Licences](#licences)
 
 ## Quick start
@@ -59,10 +59,10 @@ way; see [Running the generator](#running-the-generator) for the full options.
 
 - **Score your scanner**: write or pick an adapter and run the generator, as in
   [Quick start](#quick-start) and [Adding a scanner](#adding-a-scanner).
-- **Filter to your stack**: run only the rows for your languages and products. *Planned for
-  v0.3.*
-- **Add it to CI**: a GitHub Action that scores a scanner on every pull request. *Planned for
-  v0.3.*
+- **Filter to your stack**: run only the rows for your languages and products. *Planned; not
+  in v0.3.0.*
+- **Add it to CI**: a GitHub Action that scores a scanner on every pull request. *Planned; not
+  in v0.3.0.*
 
 ## Why
 
@@ -120,30 +120,32 @@ broken down by `form_kind`, family and language or product.
   time) is not in the catalogue.
 - **Role and key size are reported beside the outcome**, not folded into it.
 
-## Scope of v0.2
+## Scope of v0.3
 
-2035 rows, every one checked against a primary source; 78 more wait in
+2099 rows, every one checked against a primary source; 76 more wait in
 [`candidates/`](candidates/) (no primary source yet, or no family in the vocabulary).
 
 | axis | rows | positive | decoys | families |
 |---|---|---|---|---|
-| quantum | 1537 | 1368 | 169 | RSA, DSA, DH, EC, ECDSA, ECDH, EdDSA, X25519, X448, ML-KEM, ML-DSA, SLH-DSA, LMS, XMSS |
+| quantum | 1601 | 1429 | 172 | RSA, DSA, DH, EC, ECDSA, ECDH, EdDSA, X25519, X448, ML-KEM, ML-DSA, SLH-DSA, LMS, XMSS |
 | weak | 311 | 280 | 31 | SHA-1, MD5, MD4, DES, 3DES, RC4, RC2, and weak parameters of quantum families (RSA-1024, DH-1024, P-192 …) |
 | defect | 187 | 162 | 25 | 14 CWE classes, e.g. CWE-327 (ECB, old TLS), CWE-321 (hard-coded key), CWE-295 (certificate validation off), CWE-780 (RSA without OAEP), CWE-916 (too few iterations), CWE-323 (nonce reuse) |
 
 Languages and products: Python, Java, Kotlin, Go, C, C++, C#, Rust, JavaScript/Node,
 PHP, Ruby, Swift; OpenSSL C API and CLI; nginx, Apache httpd, OpenSSH, strongSwan, Caddy,
 Traefik, OpenVPN; Terraform, AWS CloudFormation, AWS/Azure/Google Cloud KMS, HashiCorp
-Vault, cert-manager, PKCS#11; IANA TLS, SSH, IKEv2, JOSE and COSE identifiers; OIDs, curve
-names, PEM and JWK. Wave 6 took forms and misuse classes from the scientific literature
+Vault, cert-manager, PKCS#11; PostgreSQL; OpenSSL CMS, GnuPG and age; jarsigner and cosign;
+Envoy, Istio, Linkerd and smallstep `step`; SPIRE; OAuth/OpenID Connect `private_key_jwt`; OPC
+UA security policies; Cisco IOS XE, MikroTik RouterOS and F5 BIG-IP; IANA TLS, SSH, IKEv2, JOSE
+and COSE identifiers; OIDs, curve names, PEM and JWK. Wave 6 took forms and misuse classes from the scientific literature
 (MASC, CryptoAPI-Bench, CryptoGuard, Egele et al., LICMA, a Go misuse study, PQC-migration
 studies), each with the paper and a primary definition as sources; `defect.taxonomy` names
 the same class in those benchmarks.
 
-**Known not covered in v0.2:** misuse that needs data flow (see above); families with no
+**Known not covered in v0.3:** misuse that needs data flow (see above); families with no
 entry in the vocabulary yet (Streamlined NTRU Prime, pre-standard Kyber names, SM2/SM3/SM4,
 GOST, Blowfish, IDEA, bcrypt/scrypt/Argon2); vendor network configuration beyond a few
-FortiOS and Junos lines; binaries and archives.
+FortiOS, Junos, Cisco IOS XE, MikroTik and F5 lines; binaries and archives.
 
 ## A row
 
@@ -238,8 +240,10 @@ full. Both outcomes came with result format 0.3. The full rules are in [`generat
 **Template syntax.** "Parses" means syntax, not compilation: Python `ast.parse`, Go
 `gofmt -e`, Java `javac` (CI uses JDK 25), C/C++ `gcc -fsyntax-only`, Rust `rustfmt`,
 Node `node --check`, PHP `php -l`, Ruby `ruby -c`, shell `sh -n`, YAML/JSON loading, and a
-line-shape check for nginx, Apache, `sshd_config`, strongSwan, FortiOS, Cisco IOS,
-OpenSSL `.cnf`, PEM, `authorized_keys`, `known_hosts` and `java.security`. C#, Kotlin and
+line-shape check for nginx, Apache, `sshd_config`, strongSwan, FortiOS, Cisco IOS, MikroTik
+`.rsc`, `postgresql.conf`, OpenSSL `.cnf`, PEM, `authorized_keys`, `known_hosts` and
+`java.security`; XML is parsed with Python's `ElementTree`, and SPIRE `server.conf` /
+`agent.conf` get the string and bracket check used for Terraform `*.tf`. C#, Kotlin and
 Swift get only a balanced-brace check. See
 [`generator/shorlist/parsecheck.py`](generator/shorlist/parsecheck.py).
 
@@ -308,30 +312,43 @@ Results are in [`results/live/`](results/live/).
 
 ## Results
 
-Measured on ShorList 0.2.0, catalogue sha256 `5d0e18007d740318…`, all on the same rows. The
-v0.1 results (30 rows, quantum axis only) stay in [`results/v0.1.1/`](results/v0.1.1/).
+Measured on ShorList 0.3.0, catalogue sha256 `084dce514b73060b…`, with the same scanner versions
+as on 0.2.0. Semgrep and cdxgen have not been re-run on 0.3.0 yet; their 0.2.0 figures are
+given in a table of their own, on the 0.2.0 denominators. The 0.2.0 results stay in
+[`results/v0.2.0/`](results/v0.2.0/), the v0.1 results (30 rows, quantum axis only) in
+[`results/v0.1.1/`](results/v0.1.1/).
+
+For each scanner re-run here, the 2035 rows that 0.2.0 already had got the same outcome as on
+0.2.0, row by row; every change in a figure comes from the 64 new rows.
 
 A 0 here means the tool reported none of these forms in this setup; it is not a judgement of the tool for its own purpose.
 
 ### Source-code scanners
 
-Quantum axis: 1368 positive forms, 169 decoys. **Without registry rows** leaves out the 552
+Quantum axis: 1429 positive forms, 172 decoys. **Without registry rows** leaves out the 552
 `registry_id` rows (IANA TLS, SSH, IKEv2, JOSE and COSE identifiers): a tool that builds its
-name tables from the same registries finds them by construction, so the remaining 816 rows
+name tables from the same registries finds them by construction, so the remaining 877 rows
 are the fairer comparison. Both columns are always given.
+
+| scanner | quantum: hit / 1429 | without registry rows: hit / 877 | decoys reported as a use / 172 | parent only | weak: hit / 280 (false alarm / 31) | defect: hit / 162 | result |
+|---|---|---|---|---|---|---|---|
+| qrp-mcp 0.44.0 | 1130 | 642 | 26 | 57 | 247 (0) | 0 | [md](results/v0.3.0/qrp-mcp-0.44.0.md) |
+| CSNP CryptoScan v1.5.0 | 266 | 207 | 47 | 139 | 123 (14) | 0 | [md](results/v0.3.0/cryptoscan-1.5.0.md) |
+| qscan 1.0.0 ([EthanCratchley/qscan](https://github.com/EthanCratchley/qscan) @8b73799) | 82 | 37 | 16 | 0 | 54 (4) | 0 | [md](results/v0.3.0/qscan-1.0.0.md) |
+
+Not re-run on 0.3.0; measured on ShorList 0.2.0 (catalogue sha256 `5d0e18007d740318…`, 2035
+rows), so the denominators are 0.2.0's:
 
 | scanner | quantum: hit / 1368 | without registry rows: hit / 816 | decoys reported as a use / 169 | parent only | weak: hit / 280 (false alarm / 31) | defect: hit / 162 | result |
 |---|---|---|---|---|---|---|---|
-| qrp-mcp 0.44.0 | 1092 | 604 | 26 | 55 | 247 (0) | 0 | [md](results/v0.2.0/qrp-mcp-0.44.0.md) |
-| CSNP CryptoScan v1.5.0 | 257 | 198 | 45 | 127 | 123 (14) | 0 | [md](results/v0.2.0/cryptoscan-1.5.0.md) |
-| qscan 1.0.0 ([EthanCratchley/qscan](https://github.com/EthanCratchley/qscan) @8b73799) | 82 | 37 | 16 | 0 | 54 (4) | 0 | [md](results/v0.2.0/qscan-1.0.0.md) |
-| cdxgen 13.6.0 (`cbom`) | 13 | 13 | 0 | 0 | 6 (0) | 0 | [md](results/v0.2.0/cdxgen-13.6.0.md) |
-| Semgrep 1.183.0 + semgrep-rules @16b9e6d | 0 | 0 | 0 | 0 | 33 (0) | 5 (+6 wrong class) | [md](results/v0.2.0/semgrep-1.183.0.md) |
+| cdxgen 13.6.0 (`cbom`) | 13 | 13 | 0 | 0 | 6 (0) | 0 | [md](results/v0.2.0/cdxgen-13.6.0.md) (0.2.0) |
+| Semgrep 1.183.0 + semgrep-rules @16b9e6d | 0 | 0 | 0 | 0 | 33 (0) | 5 (+6 wrong class) | [md](results/v0.2.0/semgrep-1.183.0.md) (0.2.0) |
 
-Semgrep is the only tool so far that scores on the defect axis: 5 hits and 6 reports of the
+On 0.2.0, Semgrep was the only tool that scored on the defect axis: 5 hits and 6 reports of the
 wrong CWE class on 162 wrong files, and 11 false alarms on the 162 fixed files planted beside
 them. Its 64 rule files look for misuse, not for which public-key algorithm is in use, so the
 0 on the quantum axis is expected. The other four report no misuse; they are inventory tools.
+The weak and defect axes did not change in 0.3.0 (all 64 new rows are quantum rows).
 
 Adapter caveats (unchanged since v0.1, details in each adapter): CryptoScan's `ECC` maps to
 `EC`, so its ECDSA and ECDH rows score `parent only`, and it reports no size; qscan reports
@@ -343,29 +360,29 @@ that list no package; Semgrep's family comes from `check_id` tokens.
 Run on the same planted trees for completeness. Each reads a file system or image, not source
 code, by its own README.
 
-| scanner | quantum: hit / 1368 | decoys / 169 | file only (no line; not a hit) | note |
+| scanner | quantum: hit / 1429 | decoys / 172 | file only (no line; not a hit) | note |
 |---|---|---|---|---|
-| CBOMkit-theia v1.1.2 | 1 | 0 | 0 | the hit is a PEM private key (SL-3596), plus 1 wrong family (SL-3601); does not scan source code (its README) |
-| CipherIQ cbom-generator 1.9.3, default | 0 | 0 | 4 | reports 4 of the PEM key files (SL-3596–3599), without a line |
-| CipherIQ cbom-generator 1.9.3, `--discover-services` | 0 | 0 | 4 | its plugins look for services at absolute system paths, not in the scanned directory |
+| CBOMkit-theia v1.1.2 ([md](results/v0.3.0/cbomkit-theia-1.1.2.md)) | 2 | 0 | 2 | the hits are two RSA private keys (SL-3596, and SL-3637 in PKCS #8), plus 2 wrong families (SL-3601, SL-3638: EC private keys reported as ECDSA); file only: the two certificates SL-3641 and SL-3642; does not scan source code (its README) |
+| CipherIQ cbom-generator 1.9.3, default ([md](results/v0.3.0/cipheriq-cbom-generator-1.9.3.md)) | 0 | 0 | 6 | reports 6 of the PEM key files (SL-3596–3599, SL-3637, SL-3640), without a line |
+| CipherIQ cbom-generator 1.9.3, `--discover-services` ([md](results/v0.3.0/cipheriq-cbom-generator-services-1.9.3.md)) | 0 | 0 | 6 | its plugins look for services at absolute system paths, not in the scanned directory |
 
 The PEM rows carry real throwaway keys (see [Test keys](#test-keys)); with placeholder bodies
 both tools reported 0 because they could not parse the key, not because they missed it.
 
 The open-source scanners were run in throwaway containers with no network during the scan;
 images, versions and invocations are recorded in each adapter and result file. Semgrep and
-cdxgen were run on GitHub's runners in 12 shards
+cdxgen were run (on 0.2.0) on GitHub's runners in 12 shards
 ([`measure.yml`](.github/workflows/measure.yml)) and merged with `shorlist merge`; the merged
 result is the one an unsharded run gives. Where a scanner's output has no role, the scorer
 takes the family's intrinsic role from `families.yaml`, so `role_ok` is not evidence about
 that scanner; where it has no size, `size_ok` reads "no", meaning not reported. No row ended
-in `scanner_error` in any run. Not measured: IBM sonar-cryptography (needs a SonarQube
-server) and CBOMkit (a service that clones a repository by URL).
+in `scanner_error` in any run, on 0.2.0 or on 0.3.0. Not measured: IBM sonar-cryptography (needs a
+SonarQube server) and CBOMkit (a service that clones a repository by URL).
 
 **Read qrp-mcp's row with its limits.** qrp-mcp is written by the author of ShorList (see
-[Conflict of interest](#conflict-of-interest)). 488 of its 1092 hits are registry rows, which
-it reads from the same registries the rows cite; without them it recognises 604 of 816. Its
-misses are published row by row in the result: 216 misses and 5 wrong families on the quantum
+[Conflict of interest](#conflict-of-interest)). 488 of its 1130 hits are registry rows, which
+it reads from the same registries the rows cite; without them it recognises 642 of 877. Its
+misses are published row by row in the result: 236 misses and 6 wrong families on the quantum
 axis, 26 false alarms on decoys, and 0 on the defect axis. No reviewer outside Elkan
 Electronic has checked these numbers yet.
 
@@ -454,6 +471,29 @@ a fix is proposed in
 of writing. The declaration adapter reads these fields from the document the tool was given,
 so the scores above do not depend on the loss.
 
+## What changed in 0.3.0
+
+- **64 rows** (2035 → 2099), all on the quantum axis: 61 positive, 3 decoys.
+  - SL-3637 to SL-3647, the generic PEM labels `PRIVATE KEY` (PKCS #8), `PUBLIC KEY` (SPKI)
+    and `CERTIFICATE` for RSA-2048, P-256, Ed25519, ML-KEM-768 and ML-DSA-65, and one decoy
+    (see [Test keys](#test-keys)), contributed by John B Joseph (Purplecop Security). They are
+    the first rows from outside the project.
+  - SL-7201 to SL-7249: PostgreSQL `ssl_groups` / `ssl_ecdh_curve`, `openssl cms`, GnuPG and
+    age, jarsigner and cosign, Envoy, Istio, Linkerd and `step`, SPIRE, OAuth
+    `private_key_jwt`, OPC UA security policies, MikroTik RouterOS and F5 BIG-IP.
+  - SL-1179 to SL-1182: Cisco IOS XE, moved from `candidates/` after checking Cisco's own
+    YANG model.
+- **Declaration axis**: the exposure label per pair and the two preference offers per
+  listener (`harvest_path`), proposed by Daniel Stokes (QER). All three results in
+  [`results/declared/`](results/declared/) carry the label.
+- **Template syntax check** for `postgresql.conf`, SPIRE `server.conf` / `agent.conf`, XML and
+  MikroTik `.rsc`.
+- **Candidates**: 76 (2 added, 4 promoted to `forms/`).
+- **Generator version** 0.1.0 → 0.3.0. It is part of every fingerprint, so a 0.3.0 result
+  never has the fingerprint of a 0.2.0 result, even for the same scanner. The 0.2.0 results
+  stay in [`results/v0.2.0/`](results/v0.2.0/).
+- Not in 0.3.0: the stack filter and the CI action (see [Use it](#use-it)).
+
 ## Contributing rows
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). In short: one row per pull request, a primary
@@ -477,7 +517,7 @@ from people with no tie to Elkan Electronic are explicitly sought.
 
 See [`CITATION.cff`](CITATION.cff).
 
-> Tenev, S. *ShorList: an open catalogue of cryptographic forms*, version 0.2.0, 2026.
+> Tenev, S. *ShorList: an open catalogue of cryptographic forms*, version 0.3.0, 2026.
 > Zenodo. https://doi.org/10.5281/zenodo.23974515
 
 ## Licences

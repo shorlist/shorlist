@@ -1,7 +1,7 @@
 {
  "result_format": "declared-0.1",
  "axis": "declared",
- "statement": "Of 33 non-consistent pairs on the ShorList declaration axis, shorlist reference comparator 0.1.0 (reference comparator: positive control, not a scanner) reproduces 33 verdicts (0 partial); of 25 consistent pairs (20 of them decoys), it raises 0 false alarms. 2 SSH rows are not scored (no_spec_structure, CycloneDX #1162).",
+ "statement": "Of 33 non-consistent pairs on the ShorList declaration axis, shorlist reference comparator 0.3.0 (reference comparator: positive control, not a scanner) reproduces 33 verdicts (0 partial); of 25 consistent pairs (20 of them decoys), it raises 0 false alarms. 2 SSH rows are not scored (no_spec_structure, CycloneDX #1162).",
  "rows": {
   "n": 60,
   "sha256": "fd4daaf3918662fa15ea80f565d743e18e40b51bcc49c29b5d43b769ea31f2d4",
@@ -44,11 +44,11 @@
  },
  "generator": {
   "name": "shorlist",
-  "version": "0.1.0"
+  "version": "0.3.0"
  },
  "tool": {
   "name": "reference",
-  "version": "shorlist reference comparator 0.1.0",
+  "version": "shorlist reference comparator 0.3.0",
   "image": "-",
   "image_id": "-",
   "command": "in process: shorlist.declared.reference.compare (reference comparator (positive control; not a scanner))"
@@ -1575,10 +1575,10 @@
    "listener": "-"
   }
  ],
- "fingerprint": "d8bf8920bf564825607c2477bd51aea3a34822c3a594e4d39838fb256c1ca08f",
+ "fingerprint": "30011e369f3a6ea0a9872fbe851e61b4e42e5373f0741a89a0517e531ff38179",
  "fingerprint_rule": "sha256(canonical JSON {rows_sha256, generator_version, tool_version, rows:[[id,outcome,reason]...]})",
  "run": {
-  "at": "2026-11-10T08:00:55Z",
+  "at": "2026-11-10T12:37:36Z",
   "python": "3.12.3",
   "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39"
  },

@@ -1,6 +1,6 @@
-**shorlist reference comparator 0.1.0** on the ShorList declaration axis (60 rows, rows sha256 `fd4daaf39186`, fingerprint `d8bf8920bf564825`)
+**shorlist reference comparator 0.3.0** on the ShorList declaration axis (60 rows, rows sha256 `fd4daaf39186`, fingerprint `30011e369f3a6ea0`)
 
-Of 33 non-consistent pairs on the ShorList declaration axis, shorlist reference comparator 0.1.0 (reference comparator: positive control, not a scanner) reproduces 33 verdicts (0 partial); of 25 consistent pairs (20 of them decoys), it raises 0 false alarms. 2 SSH rows are not scored (no_spec_structure, CycloneDX #1162).
+Of 33 non-consistent pairs on the ShorList declaration axis, shorlist reference comparator 0.3.0 (reference comparator: positive control, not a scanner) reproduces 33 verdicts (0 partial); of 25 consistent pairs (20 of them decoys), it raises 0 false alarms. 2 SSH rows are not scored (no_spec_structure, CycloneDX #1162).
 
 *By verdict class*
 
