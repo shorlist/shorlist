@@ -280,6 +280,12 @@ def test_preference_probe_offers_both_orders(monkeypatch):
     assert capture.preference(hybrid_both)["harvest_path"] is False
     failed = dict(p, classical_first=dict(p["classical_first"], negotiated=None, protocol=None))
     assert capture.preference(failed)["harvest_path"] is False
+    # a TLS 1.2 DHE handshake: the DH temp key is not one of the offered groups
+    answers["secp256r1:X25519MLKEM768"] = "New, TLSv1.2, Cipher is DHE-RSA-AES256-GCM-SHA384\nServer Temp Key: DH, 2048 bits\n"
+    dhe = probe.preference("srv:443")["classical_first"]
+    assert dhe["negotiated"] is None and dhe["protocol"] == "TLSv1.2"
+    out = capture.preference(dict(p, classical_first=dhe))
+    assert out["classical_first"]["class"] == "classical" and out["harvest_path"] is True
 
 
 def test_every_observation_records_the_two_offers():

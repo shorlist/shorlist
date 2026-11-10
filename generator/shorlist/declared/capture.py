@@ -85,12 +85,13 @@ def observation(listener_id: str, listener: dict, probe_out: dict, j: dict) -> d
 def preference(probe_pref: dict) -> dict:
     """The two preference offers (declared/probe.py PREFERENCE): the negotiated group of each, and
     harvest_path, true when the listener completed a handshake on a classical group when the client
-    listed secp256r1 first, whether or not it also accepts the hybrid."""
+    listed secp256r1 first, whether or not it also accepts the hybrid. A TLS 1.2 handshake is classical
+    whatever its key (TLS 1.2 has no quantum-safe group)."""
     out = {}
     for k, p in probe_pref.items():
         code = registry.group_code(p["negotiated"]) if p["negotiated"] else None
-        out[k] = {"offer": p["offer"], "negotiated": p["negotiated"], "protocol": p["protocol"],
-                  "class": registry.group_class(code) if code else None}
+        cls = "classical" if p["protocol"] == "TLSv1.2" else registry.group_class(code) if code else None
+        out[k] = {"offer": p["offer"], "negotiated": p["negotiated"], "protocol": p["protocol"], "class": cls}
     out["harvest_path"] = out["classical_first"]["class"] == "classical"
     return out
 

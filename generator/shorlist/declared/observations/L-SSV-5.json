@@ -233,13 +233,13 @@
  "preference": {
   "hybrid_first": {
    "offer": "X25519MLKEM768:secp256r1",
-   "negotiated": "ffdhe2048",
+   "negotiated": null,
    "protocol": "TLSv1.2",
    "class": "classical"
   },
   "classical_first": {
    "offer": "secp256r1:X25519MLKEM768",
-   "negotiated": "ffdhe2048",
+   "negotiated": null,
    "protocol": "TLSv1.2",
    "class": "classical"
   },
@@ -1492,19 +1492,19 @@
   "preference": {
    "hybrid_first": {
     "offer": "X25519MLKEM768:secp256r1",
-    "negotiated": "ffdhe2048",
+    "negotiated": null,
     "protocol": "TLSv1.2",
-    "evidence": "s_client -groups X25519MLKEM768:secp256r1: TLSv1.2 negotiated ffdhe2048"
+    "evidence": "s_client -groups X25519MLKEM768:secp256r1: TLSv1.2 negotiated None"
    },
    "classical_first": {
     "offer": "secp256r1:X25519MLKEM768",
-    "negotiated": "ffdhe2048",
+    "negotiated": null,
     "protocol": "TLSv1.2",
-    "evidence": "s_client -groups secp256r1:X25519MLKEM768: TLSv1.2 negotiated ffdhe2048"
+    "evidence": "s_client -groups secp256r1:X25519MLKEM768: TLSv1.2 negotiated None"
    }
   },
   "openssl": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)"
  },
- "captured_at": "2026-11-10T07:54:42Z",
+ "captured_at": "2026-11-10T08:00:30Z",
  "harness_image_id": "sha256:fc33cab33289450007ceb7b48c379e8fdc9238b03cebb4d3bee41b08c079ecf4"
 }

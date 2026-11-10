@@ -135,8 +135,9 @@ def markdown(res: dict) -> str:
     if res.get("preference"):
         out += ["*Listener preference (hybrid and classical offered together)*", "",
                 "| listener | hybrid first | classical first | harvest path |", "|---|---|---|---|"]
+        pick = lambda o: o["negotiated"] or (f"{o['protocol']}, no offered group" if o["protocol"] else "no handshake")  # noqa: E731
         for lid, p in res["preference"].items():
-            out.append(f"| {lid} | {p['hybrid_first']['negotiated']} | {p['classical_first']['negotiated']} | "
+            out.append(f"| {lid} | {pick(p['hybrid_first'])} | {pick(p['classical_first'])} | "
                        f"{'yes' if p['harvest_path'] else 'no'} |")
         out.append("")
     if res.get("controls"):

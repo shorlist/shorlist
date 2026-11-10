@@ -36,5 +36,31 @@ Of 33 non-consistent pairs on the ShorList declaration axis, shorlist reference 
 | cipher_suite | 25 | 14 | 0 | 0 | 0 | 11 | 0 |
 | group | 33 | 19 | 0 | 0 | 0 | 14 | 0 |
 
+*By exposure label*
+
+| exposure | n | hit | partial | miss | false_alarm | ok | tool_error |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| hides_exposure | 8 | 8 | 0 | 0 | 0 | 0 | 0 |
+| immaterial | 44 | 19 | 0 | 0 | 0 | 25 | 0 |
+| overstates_protection | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
+| understates | 4 | 4 | 0 | 0 | 0 | 0 | 0 |
+
+*Listener preference (hybrid and classical offered together)*
+
+| listener | hybrid first | classical first | harvest path |
+|---|---|---|---|
+| L-APA-1 | X25519MLKEM768 | secp256r1 | yes |
+| L-APA-2 | secp256r1 | secp256r1 | yes |
+| L-APA-3 | no handshake | no handshake | no |
+| L-NGX-1 | X25519MLKEM768 | X25519MLKEM768 | no |
+| L-NGX-2 | X25519MLKEM768 | secp256r1 | yes |
+| L-NGX-3 | no handshake | no handshake | no |
+| L-NGX-4 | no handshake | no handshake | no |
+| L-SSV-1 | no handshake | no handshake | no |
+| L-SSV-2 | no handshake | no handshake | no |
+| L-SSV-3 | secp256r1 | secp256r1 | yes |
+| L-SSV-4 | X25519MLKEM768 | secp256r1 | yes |
+| L-SSV-5 | TLSv1.2, no offered group | TLSv1.2, no offered group | yes |
+
 *Controls*: positive control PASSED: the reference comparator must score 33/33 hits and 25/25 ok
 

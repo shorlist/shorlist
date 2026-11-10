@@ -166,12 +166,16 @@ def probe(job: dict) -> dict:
 
 
 def preference(target: str) -> dict:
-    """The group the listener picks when the client offers both, once per order in PREFERENCE."""
+    """The group the listener picks when the client offers both, once per order in PREFERENCE. A key the
+    offer does not name (a TLS 1.2 DHE suite's "Temp Key: DH") is not a negotiated group: None, with the
+    protocol kept."""
     out = {}
     for k, offer in PREFERENCE.items():
         o = s_client(target, "-groups", offer)
         proto, _ = negotiated_cipher(o)
         got = negotiated_group(o)
+        if (got or "").lower() not in offer.lower().split(":"):
+            got = None
         out[k] = {"offer": offer, "negotiated": got, "protocol": proto,
                   "evidence": f"s_client -groups {offer}: {proto} negotiated {got}"}
     return out
