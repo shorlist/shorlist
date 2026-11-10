@@ -124,11 +124,20 @@ def markdown(res: dict) -> str:
            res["statement"], ""]
     cols = ("n", "hit", "partial", "miss", "false_alarm", "ok", "tool_error")
     for title, key in (("By verdict class", "by_verdict"), ("By server", "by_server"), ("By decoy class (consistent rows)", "by_decoy"),
-                       ("By category", "by_category")):
+                       ("By category", "by_category"), ("By exposure label", "by_exposure")):
+        if key not in res:  # a result written before the exposure label
+            continue
         out += [f"*{title}*", "", "| " + key.split("_", 1)[1] + " | " + " | ".join(cols) + " |",
                 "|---|" + "---:|" * len(cols)]
         for k, cell in res[key].items():
             out.append(f"| {k} | " + " | ".join(str(cell[c]) for c in cols) + " |")
+        out.append("")
+    if res.get("preference"):
+        out += ["*Listener preference (hybrid and classical offered together)*", "",
+                "| listener | hybrid first | classical first | harvest path |", "|---|---|---|---|"]
+        for lid, p in res["preference"].items():
+            out.append(f"| {lid} | {p['hybrid_first']['negotiated']} | {p['classical_first']['negotiated']} | "
+                       f"{'yes' if p['harvest_path'] else 'no'} |")
         out.append("")
     if res.get("controls"):
         out += [f"*Controls*: {res['controls']}", ""]

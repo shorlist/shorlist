@@ -9,7 +9,8 @@ Every container is started with --name and removed with `docker rm -f` in a fina
 network; the internal network has no route out.
 
 The result is observations/<listener>.json: the per-candidate evidence, the accepted set by category
-and TLS version, the candidate lists, and the sha256 of the listener configuration it was taken from
+and TLS version, the candidate lists, the group picked in each of the two preference offers (not part
+of rows_sha256), and the sha256 of the listener configuration it was taken from
 (validate refuses a row whose listener changed after its capture).
 """
 from __future__ import annotations
@@ -74,10 +75,24 @@ def observation(listener_id: str, listener: dict, probe_out: dict, j: dict) -> d
         "candidates": {"group": [registry.group_code(g) for g in j["groups"]],
                        "cipher_suite": [c for c, _ in j["suites13"]] + [c for c, _ in j["suites12"]]},
         "accepted": {"group": acc_g, "cipher_suite": acc_s},
+        "preference": preference(probe_out["preference"]),
         "evidence": probe_out,
         "captured_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "harness_image_id": docker(["image", "inspect", servers.HARNESS_IMAGE, "--format", "{{.Id}}"]).stdout.strip(),
     }
+
+
+def preference(probe_pref: dict) -> dict:
+    """The two preference offers (declared/probe.py PREFERENCE): the negotiated group of each, and
+    harvest_path, true when the listener completed a handshake on a classical group when the client
+    listed secp256r1 first, whether or not it also accepts the hybrid."""
+    out = {}
+    for k, p in probe_pref.items():
+        code = registry.group_code(p["negotiated"]) if p["negotiated"] else None
+        out[k] = {"offer": p["offer"], "negotiated": p["negotiated"], "protocol": p["protocol"],
+                  "class": registry.group_class(code) if code else None}
+    out["harvest_path"] = out["classical_first"]["class"] == "classical"
+    return out
 
 
 class Capture:
@@ -164,7 +179,9 @@ class Capture:
                 acc = obs["accepted"]
                 self.log(f"{lid:<10} {lst['server']:<8} {time.time() - t0:5.1f}s  groups: "
                          + ",".join(g["name"] + "/" + "+".join(g["versions"]) for g in acc["group"])
-                         + "  suites: " + ",".join(s["code"] for s in acc["cipher_suite"]))
+                         + "  suites: " + ",".join(s["code"] for s in acc["cipher_suite"])
+                         + f"  picks: {obs['preference']['hybrid_first']['negotiated']}"
+                         f"/{obs['preference']['classical_first']['negotiated']}")
                 done.append(lid)
         finally:
             for n in list(self.names):

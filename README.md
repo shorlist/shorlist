@@ -394,6 +394,19 @@ allows exactly one reading.
   Apache httpd 2.4.69 and `openssl s_server` 3.5.9 in the network axis's images, probed by
   [`declared/probe.py`](generator/shorlist/declared/probe.py); results are in
   `declared/observations/`, bound to the sha256 of the configuration they came from.
+- **Exposure label**: each pair also carries a second label, for rating rather than for
+  honesty of the declaration: `hides_exposure` (an accepted classical group, or a TLS 1.2
+  suite with classical key exchange, is not declared), `understates` (an accepted hybrid or
+  ML-KEM group is not declared), `overstates_protection` (a declared hybrid or ML-KEM group is
+  refused) or `immaterial` (everything else). TLS 1.3 suites carry no key exchange, so their
+  exposure is read on the group pairs. An undeclared static-RSA suite (`TLS_RSA_WITH_…`) is
+  marked `forward_secrecy: false`; no severity grade is derived from it. The label is computed
+  by the reference comparator from the pair and does not enter the score.
+- **Two offers per listener**: after the accepted set, the reference client offers hybrid and
+  classical together, once hybrid first (`X25519MLKEM768:secp256r1`) and once classical first
+  (`secp256r1:X25519MLKEM768`), and records the group the listener picks. A listener that
+  settles on a classical group when the client lists it first is marked `harvest_path`, even
+  if it accepts the hybrid.
 - **SSH** rows are listed as `not_scored: no_spec_structure`: CycloneDX has no field for SSH
   key exchange or host key algorithms ([#1162](https://github.com/CycloneDX/specification/issues/1162)).
 - **Scoring**: `hit`, `miss`, `false_alarm`, `ok`, and `partial` in its own column (a
@@ -402,6 +415,9 @@ allows exactly one reading.
 - **Positive control**: [`declared/reference.py`](generator/shorlist/declared/reference.py),
   a plain implementation of the scope rules. It is a reference, not a scanner, and must score
   100%; that is what shows each row is decidable from the pair and the public registries.
+
+The exposure label, its four names, and the two offers per listener were proposed by Daniel
+Stokes (QER). We thank him for both.
 
 ```sh
 cd generator

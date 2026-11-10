@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .. import __version__
-from . import observed, registry, rows as rowsmod, scoring
+from . import observed, reference, registry, rows as rowsmod, scoring
 from .adapters import TOOLS, Reference
 
 RESULT_FORMAT = "declared-0.1"
@@ -42,7 +42,8 @@ def run(tool_name: str, keep: Path | None = None, only: set[str] | None = None, 
             except (ValueError, KeyError, TypeError) as e:
                 out = {"error": f"exit {rr['exit']}: {type(e).__name__}: {e}; stderr: {rr['stderr'][-300:]}"}
         s = scoring.score(r, out)
-        s.update(server=lst[r["listener"]]["server"], listener=r["listener"])
+        e = reference.exposure(reference.compare(r["declaration"], obs, cat))
+        s.update(server=lst[r["listener"]]["server"], listener=r["listener"], exposure=e.pop("label"), **e)
         if "findings" in out:
             s["tool_findings"] = [f for f in out["findings"] if f["category"] == cat]
         scored.append(s)
@@ -69,6 +70,8 @@ def run(tool_name: str, keep: Path | None = None, only: set[str] | None = None, 
         "by_server": scoring.table(scored, "server"),
         "by_decoy": scoring.table([s for s in scored if s.get("verdict") == "consistent"], "decoy_class"),
         "by_category": scoring.table(scored, "category"),
+        "by_exposure": scoring.table(scored, "exposure"),
+        "preference": {lid: o["preference"] for lid in sorted(lst) if (o := rowsmod.observation(lid)) and "preference" in o},
         "rows_scored": scored,
         "fingerprint": scoring.fingerprint(rsha, __version__, version, scored),
         "fingerprint_rule": "sha256(canonical JSON {rows_sha256, generator_version, tool_version, rows:[[id,outcome,reason]...]})",

@@ -230,6 +230,21 @@
    }
   ]
  },
+ "preference": {
+  "hybrid_first": {
+   "offer": "X25519MLKEM768:secp256r1",
+   "negotiated": null,
+   "protocol": null,
+   "class": null
+  },
+  "classical_first": {
+   "offer": "secp256r1:X25519MLKEM768",
+   "negotiated": null,
+   "protocol": null,
+   "class": null
+  },
+  "harvest_path": false
+ },
  "evidence": {
   "groups": [
    {
@@ -1474,8 +1489,22 @@
     "evidence": "raw TLS 1.2 ClientHello offering 0xCCAE alone: {'answer': 'alert', 'alert': 70}"
    }
   ],
+  "preference": {
+   "hybrid_first": {
+    "offer": "X25519MLKEM768:secp256r1",
+    "negotiated": null,
+    "protocol": null,
+    "evidence": "s_client -groups X25519MLKEM768:secp256r1: None negotiated None"
+   },
+   "classical_first": {
+    "offer": "secp256r1:X25519MLKEM768",
+    "negotiated": null,
+    "protocol": null,
+    "evidence": "s_client -groups secp256r1:X25519MLKEM768: None negotiated None"
+   }
+  },
   "openssl": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)"
  },
- "captured_at": "2026-11-07T07:56:39Z",
+ "captured_at": "2026-11-10T07:54:33Z",
  "harness_image_id": "sha256:fc33cab33289450007ceb7b48c379e8fdc9238b03cebb4d3bee41b08c079ecf4"
 }

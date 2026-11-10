@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "generator"))
 
 from shorlist.__main__ import main  # noqa: E402
-from shorlist.declared import adapters, observed, probe, reference, registry, rows, scoring  # noqa: E402
+from shorlist.declared import adapters, capture, observed, probe, reference, registry, rows, scoring  # noqa: E402
 from shorlist.declared.run import run  # noqa: E402
 
 FIX = ROOT / "tests" / "fixtures" / "declared"
@@ -207,6 +207,87 @@ def test_probe_parses_s_client_output():
     sh = bytes.fromhex("160303004a0200004603030000") + b"\x00" * 30 + b"\x00" + bytes.fromhex("c02f00")
     assert probe.parse_server_answer(sh)["cipher"] == "0xC02F"
     assert probe.parse_server_answer(bytes.fromhex("15030300020228"))["answer"] == "alert"
+
+
+# ---------------------------------------------------------------- exposure label and preference (Daniel Stokes, QER)
+def test_registry_knows_a_suites_key_exchange_and_a_groups_quantum_class():
+    assert [registry.suite_kx(c) for c in ("0x009C", "0x002F", "0xC02F", "0x009E", "0x1301")] == ["RSA", "RSA", "ECDH", "DH", "any"]
+    assert all("kx" in s for s in registry.openssl_suites().values())
+    assert [registry.group_class(c) for c in ("0x11EC", "0x0201", "0x0017", "0x001D", "0x0100")] == \
+        ["hybrid", "ML-KEM", "classical", "classical", "classical"]
+
+
+@pytest.mark.parametrize("rid,label", [
+    ("SLD-0026", "hides_exposure"),         # undeclared secp256r1
+    ("SLD-0041", "hides_exposure"),         # undeclared x448
+    ("SLD-0004", "understates"),            # undeclared X25519MLKEM768
+    ("SLD-0032", "understates"),            # undeclared MLKEM768
+    ("SLD-0018", "overstates_protection"),  # declared X25519MLKEM768, refused
+    ("SLD-0036", "overstates_protection"),  # declared MLKEM512, refused
+    ("SLD-0003", "immaterial"),             # declared secp256r1, refused
+    ("SLD-0008", "immaterial"),             # parameter_mismatch inside ECDH
+    ("SLD-0002", "immaterial"),             # consistent
+    ("SLD-0010", "hides_exposure"),         # undeclared TLS 1.2 ECDHE suite
+    ("SLD-0028", "hides_exposure"),         # undeclared TLS_RSA_WITH_AES_128_GCM_SHA256
+    ("SLD-0019", "immaterial"),             # undeclared TLS 1.3 suite: no key exchange in the suite
+    ("SLD-0029", "immaterial"),             # declared TLS 1.2 suite, refused
+])
+def test_exposure_label(rid, label):
+    r = ROWS[rid]
+    assert reference.exposure(reference.compare(r["declaration"], obs_of(rid), r["compare"]["category"]))["label"] == label
+
+
+def test_static_rsa_is_marked_without_forward_secrecy():
+    def e(rid):
+        r = ROWS[rid]
+        return reference.exposure(reference.compare(r["declaration"], obs_of(rid), "cipher_suite"))
+    assert e("SLD-0028") == e("SLD-0052") == {"label": "hides_exposure", "key_exchange": "RSA", "forward_secrecy": False}
+    assert e("SLD-0010") == {"label": "hides_exposure", "key_exchange": "ECDH", "forward_secrecy": True}
+
+
+def test_unsettled_and_unlabelled_cases():
+    pm = {"category": "group", "verdict": "parameter_mismatch", "focus": {"declared": "0x11EC", "observed": "0x0017"}}
+    assert reference.exposure(pm)["label"] == reference.MISMATCH_QUANTUM_CLASSICAL == "overstates_protection"
+    assert reference.exposure({"category": "group", "verdict": "undecidable"}) == {"label": None}
+
+
+def test_run_carries_the_exposure_label_and_keeps_the_fingerprint():
+    res = run("reference", log=lambda m: None)
+    by = {s["id"]: s for s in res["rows_scored"]}
+    assert by["SLD-0026"]["exposure"] == "hides_exposure" and by["SLD-0028"]["forward_secrecy"] is False
+    assert all(s["exposure"] in reference.EXPOSURE_LABELS for s in res["rows_scored"] if s["outcome"] != "not_scored")
+    assert set(res["by_exposure"]) == set(reference.EXPOSURE_LABELS)
+    rec = json.loads((RESULTS / "reference.json").read_text())
+    assert res["fingerprint"] == rec["fingerprint"]
+    assert "By exposure label" in scoring.markdown(res)
+
+
+def test_preference_probe_offers_both_orders(monkeypatch):
+    seen = []
+    answers = {"X25519MLKEM768:secp256r1": "New, TLSv1.3, Cipher is TLS_AES_128_GCM_SHA256\nNegotiated TLS1.3 group: X25519MLKEM768\n",
+               "secp256r1:X25519MLKEM768": "New, TLSv1.3, Cipher is TLS_AES_128_GCM_SHA256\nNegotiated TLS1.3 group: secp256r1\n"}
+
+    def fake(target, *args):
+        seen.append(args)
+        return answers[args[args.index("-groups") + 1]]
+    monkeypatch.setattr(probe, "s_client", fake)
+    p = probe.preference("srv:443")
+    assert seen == [("-groups", "X25519MLKEM768:secp256r1"), ("-groups", "secp256r1:X25519MLKEM768")]
+    assert p["hybrid_first"]["negotiated"] == "X25519MLKEM768" and p["classical_first"]["negotiated"] == "secp256r1"
+    out = capture.preference(p)
+    assert out["harvest_path"] is True and out["hybrid_first"]["class"] == "hybrid"
+    hybrid_both = dict(p, classical_first=dict(p["classical_first"], negotiated="X25519MLKEM768"))
+    assert capture.preference(hybrid_both)["harvest_path"] is False
+    failed = dict(p, classical_first=dict(p["classical_first"], negotiated=None, protocol=None))
+    assert capture.preference(failed)["harvest_path"] is False
+
+
+def test_every_observation_records_the_two_offers():
+    for lid in rows.listeners():
+        p = rows.observation(lid)["preference"]
+        assert p["hybrid_first"]["offer"] == "X25519MLKEM768:secp256r1"
+        assert p["classical_first"]["offer"] == "secp256r1:X25519MLKEM768"
+        assert p["harvest_path"] == (p["classical_first"]["class"] == "classical")
 
 
 def test_cli_validate_and_table(capsys):

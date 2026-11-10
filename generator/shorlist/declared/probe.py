@@ -25,6 +25,9 @@ One handshake per candidate (scope rule S2), never one negotiated handshake:
   suite, TLS 1.2   a raw TLS 1.2 ClientHello offering that one code point (so suites this OpenSSL
                    client would not send can still be asked for); accepted when the server answers
                    with a ServerHello choosing it.
+  preference       after the accepted set, two offers of hybrid and classical together, no version
+                   pinned: `openssl s_client -groups X25519MLKEM768:secp256r1` and
+                   `-groups secp256r1:X25519MLKEM768`; the negotiated group of each is recorded.
 
 The raw ClientHello and the s_client output parsing are copied from the network axis
 (shorlist-mreja generator/shorlist/live/probe.py: client_hello, parse_server_answer, raw_hello, run,
@@ -41,6 +44,9 @@ import subprocess
 import sys
 
 EC_TLS12 = {"x25519", "x448", "secp256r1", "secp384r1", "secp521r1"}
+# Two offers per listener, after the accepted set (Daniel Stokes, QER, 2026-11-07): hybrid and classical
+# together, in both orders, with no version pinned; the group the listener picks is recorded.
+PREFERENCE = {"hybrid_first": "X25519MLKEM768:secp256r1", "classical_first": "secp256r1:X25519MLKEM768"}
 # OpenSSL spellings in s_client output -> IANA names (copied from live/probe.py GROUP_OUT)
 GROUP_OUT = {"x25519": "x25519", "x448": "x448", "prime256v1": "secp256r1", "secp256r1": "secp256r1",
              "secp384r1": "secp384r1", "secp521r1": "secp521r1"}
@@ -155,8 +161,20 @@ def probe(job: dict) -> dict:
                        "accepted": a.get("answer") == "server_hello" and (a.get("cipher") or "").upper() == code.upper()
                        and a.get("version") == "0x0303",
                        "evidence": f"raw TLS 1.2 ClientHello offering {code} alone: {a}"})
-    return {"groups": groups, "suites": suites,
+    return {"groups": groups, "suites": suites, "preference": preference(target),
             "openssl": run(["openssl", "version"]).strip()}
+
+
+def preference(target: str) -> dict:
+    """The group the listener picks when the client offers both, once per order in PREFERENCE."""
+    out = {}
+    for k, offer in PREFERENCE.items():
+        o = s_client(target, "-groups", offer)
+        proto, _ = negotiated_cipher(o)
+        got = negotiated_group(o)
+        out[k] = {"offer": offer, "negotiated": got, "protocol": proto,
+                  "evidence": f"s_client -groups {offer}: {proto} negotiated {got}"}
+    return out
 
 
 def main(job_path: str) -> int:

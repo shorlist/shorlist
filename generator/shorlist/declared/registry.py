@@ -90,12 +90,13 @@ def iana(category: str) -> dict[str, dict]:
 
 @lru_cache
 def openssl_suites() -> dict[str, dict]:
-    """code -> {openssl, iana, version, line} from `openssl ciphers -V -stdname`."""
+    """code -> {openssl, iana, version, kx, line} from `openssl ciphers -V -stdname` (kx: the Kx= column)."""
     out = {}
     for ln in OSSL_TXT.read_text().splitlines():
-        m = re.match(r"\s*(0x[0-9A-F]{2},0x[0-9A-F]{2}) - (\S+)\s+- (\S+)\s+(\S+)", ln)
+        m = re.match(r"\s*(0x[0-9A-F]{2},0x[0-9A-F]{2}) - (\S+)\s+- (\S+)\s+(\S+)\s+Kx=(\S+)", ln)
         if m:
-            out[code_of(m.group(1))] = {"iana": m.group(2), "openssl": m.group(3), "version": m.group(4), "line": ln.strip()}
+            out[code_of(m.group(1))] = {"iana": m.group(2), "openssl": m.group(3), "version": m.group(4), "kx": m.group(5),
+                                        "line": ln.strip()}
     return out
 
 
@@ -192,6 +193,26 @@ def group_family(code: str) -> str | None:
     if re.fullmatch(r"mlkem(512|768|1024)", name):
         return "ML-KEM"
     return None
+
+
+# Key exchange of a cipher suite, from the Kx= column of the OpenSSL copy. TLS 1.3 suites say "any": the
+# key exchange is the negotiated group. Plain PSK has no public-key key exchange. RSA and RSAPSK are RSA
+# key transport: no forward secrecy, one broken or stolen server key opens every recorded session.
+CLASSICAL_KX = ("RSA", "RSAPSK", "ECDH", "ECDHEPSK", "DH", "DHEPSK", "SRP")
+NO_FORWARD_SECRECY_KX = ("RSA", "RSAPSK")
+
+
+def suite_kx(code: str) -> str | None:
+    """A cipher suite's key exchange as OpenSSL names it (RSA, ECDH, DH, PSK, ..., "any" for TLS 1.3), or
+    None for a suite not in the OpenSSL copy."""
+    return openssl_suites().get(code, {}).get("kx")
+
+
+def group_class(code: str) -> str:
+    """Quantum class of a TLS group: 'hybrid' (hybrid_parts), 'ML-KEM' (group_family) or 'classical'."""
+    if hybrid_parts(code):
+        return "hybrid"
+    return "ML-KEM" if group_family(code) == "ML-KEM" else "classical"
 
 
 def hybrid_parts(code: str) -> frozenset[str] | None:

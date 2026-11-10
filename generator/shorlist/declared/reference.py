@@ -150,3 +150,37 @@ def compare(decl: dict, obs: dict, category: str) -> dict:
     if len(over) == 1 and not under:
         return out | {"verdict": "overclaimed", "focus": over[0]}
     return out | {"verdict": "undecidable", "reason": f"{len(under)} undeclared and {len(over)} overclaimed items"}
+
+
+# Second label per pair (Daniel Stokes, QER, 2026-11-07): what the verdict means for exposure.
+EXPOSURE_LABELS = ("hides_exposure", "overstates_protection", "understates", "immaterial")
+# NOT SETTLED: a parameter_mismatch between a quantum-safe (hybrid or ML-KEM) and a classical group. We lean
+# to overstates_protection; change it here and only here. Under the present scope rules it does not occur:
+# parameter_mismatch needs one family on both sides, and a hybrid has no family.
+MISMATCH_QUANTUM_CLASSICAL = "overstates_protection"
+
+
+def exposure(cmp: dict) -> dict:
+    """The exposure label of one comparison (compare()'s result), from its verdict and the quantum class of
+    the focus item. Groups: undeclared classical -> hides_exposure; undeclared hybrid or ML-KEM ->
+    understates; declared hybrid or ML-KEM the listener refuses -> overstates_protection. Cipher suites: an
+    undeclared suite whose key exchange is classical (TLS 1.2 RSA, ECDHE, DHE, ...) -> hides_exposure, with
+    its key exchange and whether it has forward secrecy; a TLS 1.3 suite carries no key exchange, so its
+    exposure is judged on the group pair. Everything else -> immaterial; an undecidable comparison has no label."""
+    v, focus = cmp["verdict"], cmp.get("focus")
+    if v == "undecidable":
+        return {"label": None}
+    if v == "consistent":
+        return {"label": "immaterial"}
+    if cmp["category"] == "cipher_suite":
+        kx = registry.suite_kx(focus) if v == "undeclared" else None
+        if kx in registry.CLASSICAL_KX:
+            return {"label": "hides_exposure", "key_exchange": kx, "forward_secrecy": kx not in registry.NO_FORWARD_SECRECY_KX}
+        return {"label": "immaterial"}
+    if v == "parameter_mismatch":
+        classes = {registry.group_class(focus["declared"]), registry.group_class(focus["observed"])}
+        return {"label": MISMATCH_QUANTUM_CLASSICAL if "classical" in classes and len(classes) > 1 else "immaterial"}
+    quantum = registry.group_class(focus) != "classical"
+    if v == "undeclared":
+        return {"label": "understates" if quantum else "hides_exposure"}
+    return {"label": "overstates_protection" if quantum else "immaterial"}  # overclaimed
