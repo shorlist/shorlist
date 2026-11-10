@@ -1,0 +1,35 @@
+id: "SL-7225"
+title: "Istio: COMPLIANCE_POLICY pqc (X25519MLKEM768 key exchange)"
+family: "ML-KEM"
+parameter_set: "X25519MLKEM768"
+role: "key_establishment"
+form_kind: "config_value"
+language_or_product: "Istio 1.32 (IstioOperator, istiod)"
+negative: false
+literal: "COMPLIANCE_POLICY: pqc"
+context_filename: "istio-operator.yaml"
+context_template: |
+  apiVersion: install.istio.io/v1alpha1
+  kind: IstioOperator
+  spec:
+    values:
+      pilot:
+        env:
+          COMPLIANCE_POLICY: pqc
+expected:
+  family: "ML-KEM"
+  role: "key_establishment"
+  size: "undetermined"
+source:
+  - url: "https://istio.io/v1.32/docs/reference/commands/pilot-discovery/"
+    section: "pilot-discovery (istiod): Environment variables, COMPLIANCE_POLICY"
+    read_at: "2026-11-10"
+    quote: "'pqc' which enforces post-quantum-safe key exchange X25519MLKEM768, TLS v1.3 and cipher suites TLS_AES_128_GCM_SHA256 and TLS_AES_256_GCM_SHA384"
+  - url: "https://istio.io/v1.32/docs/reference/commands/pilot-agent/"
+    section: "pilot-agent: Environment variables, COMPLIANCE_POLICY"
+    read_at: "2026-11-10"
+    quote: "Setting compliance policy in the control plane is a necessary but not a sufficient requirement to achieve compliance."
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "Hybrid: scored on the post-quantum half (ML-KEM), as SL-0011. Istio calls the policy experimental. The variable is listed for both istiod (pilot-discovery) and pilot-agent; this template sets it on istiod, and Istio warns that the control-plane setting alone is not sufficient."

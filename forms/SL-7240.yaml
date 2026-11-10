@@ -1,0 +1,47 @@
+id: "SL-7240"
+title: "Decoy: OPC UA SecurityPolicy Basic256Sha256 commented out"
+family: "RSA"
+parameter_set: null
+role: "n.a."
+form_kind: "config_value"
+language_or_product: "OPC UA (UA-.NETStandard 2.0.1 ApplicationConfiguration XML)"
+negative: true
+decoy_class: "comment"
+literal: "<!-- <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256</SecurityPolicyUri> -->"
+context_filename: "Opc.Ua.Server.Config.xml"
+context_template: |
+  <?xml version="1.0" encoding="utf-8"?>
+  <ApplicationConfiguration xmlns="http://opcfoundation.org/UA/SDK/Configuration.xsd">
+    <ApplicationName>Line 4 PLC gateway</ApplicationName>
+    <ApplicationType>Server_0</ApplicationType>
+    <ServerConfiguration>
+      <SecurityPolicies>
+        <ServerSecurityPolicy>
+          <SecurityMode>None_1</SecurityMode>
+          <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+        </ServerSecurityPolicy>
+        <!-- <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256</SecurityPolicyUri> -->
+      </SecurityPolicies>
+    </ServerConfiguration>
+  </ApplicationConfiguration>
+expected:
+  family: "RSA"
+  role: "undetermined"
+  size: "undetermined"
+source:
+  - url: "https://github.com/OPCFoundation/UA-.NETStandard/blob/2.0.1/src/Opc.Ua.Core/Security/SecurityPolicies.cs"
+    section: "SecurityPolicies.BaseUri"
+    read_at: "2026-11-10"
+    quote: "public const string BaseUri = \"http://opcfoundation.org/UA/SecurityPolicy#\";"
+  - url: "https://github.com/OPCFoundation/UA-.NETStandard/blob/2.0.1/src/Opc.Ua.Core/Security/SecurityPolicies.cs"
+    section: "SecurityPolicies.None"
+    read_at: "2026-11-10"
+    quote: "public const string None = BaseUri + \"None\";"
+  - url: "https://github.com/OPCFoundation/UA-.NETStandard/blob/2.0.1/src/Opc.Ua.Core/Security/SecurityPolicies.cs"
+    section: "SecurityPolicies.Basic256Sha256"
+    read_at: "2026-11-10"
+    quote: "public const string Basic256Sha256 = BaseUri + \"Basic256Sha256\";"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "The RSA policy is inside an XML comment; the only active policy is None, which uses no cryptography. Not a use of RSA."

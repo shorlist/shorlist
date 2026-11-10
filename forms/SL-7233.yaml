@@ -1,0 +1,40 @@
+id: "SL-7233"
+title: "OAuth client metadata: private_key_jwt signed with RS256"
+family: "RSA"
+cyclonedx_family: "RSASSA-PKCS1"
+parameter_set: null
+role: "signature"
+form_kind: "config_value"
+language_or_product: "OpenID Connect / OAuth client registration (JSON)"
+negative: false
+literal: "\"token_endpoint_auth_signing_alg\": \"RS256\","
+context_filename: "client.json"
+context_template: |
+  {
+    "client_name": "backup-agent",
+    "grant_types": ["client_credentials"],
+    "token_endpoint_auth_method": "private_key_jwt",
+    "token_endpoint_auth_signing_alg": "RS256",
+    "jwks_uri": "https://agent.example.org/jwks.json"
+  }
+expected:
+  family: "RSA"
+  role: "signature"
+  size: "undetermined"
+source:
+  - url: "https://openid.net/specs/openid-connect-registration-1_0.html"
+    section: "2. Client Metadata: token_endpoint_auth_signing_alg"
+    read_at: "2026-11-10"
+    quote: "used to authenticate the Client at the Token Endpoint for the private_key_jwt and client_secret_jwt authentication methods."
+  - url: "https://openid.net/specs/openid-connect-core-1_0.html"
+    section: "9. Client Authentication: private_key_jwt"
+    read_at: "2026-11-10"
+    quote: "Clients that have registered a public key sign a JWT using that key."
+  - url: "https://openid.net/specs/openid-connect-registration-1_0.html"
+    section: "2. Client Metadata: token_endpoint_auth_signing_alg"
+    read_at: "2026-11-10"
+    quote: "Servers SHOULD support RS256 ."
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "OAuth client (e.g. an agent) registered for private_key_jwt client authentication (OIDC Dynamic Client Registration 1.0; RFC 7523). 'token_endpoint_auth_method: private_key_jwt' alone pins no family; the signing alg does."

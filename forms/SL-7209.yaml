@@ -1,0 +1,30 @@
+id: "SL-7209"
+title: "GnuPG: add a cv25519 encryption subkey"
+family: "X25519"
+parameter_set: "Curve25519"
+role: "key_establishment"
+form_kind: "cli"
+language_or_product: "GnuPG 2.5 (gpg)"
+negative: false
+literal: "gpg --batch --quick-add-key \"$1\" cv25519 encr"
+context_filename: "backup-key.sh"
+context_template: |
+  #!/bin/sh
+  gpg --batch --quick-add-key "$1" cv25519 encr
+expected:
+  family: "X25519"
+  role: "key_establishment"
+  size: "undetermined"
+source:
+  - url: "https://www.gnupg.org/documentation/manuals/gnupg/OpenPGP-Key-Management.html"
+    section: "OpenPGP Key Management: --quick-add-key fpr [algo [usage [expire]]]"
+    read_at: "2026-11-10"
+    quote: "and “encr” for an encryption subkey"
+  - url: "https://github.com/gpg/gnupg/blob/gnupg-2.5.24/g10/keygen.c"
+    section: "parse_key_parameter_part: algorithm strings"
+    read_at: "2026-11-10"
+    quote: "cv25519 := ECDH using curve Curve25519."
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "The fingerprint is the script's first argument. The subkey is the one a later 'gpg --encrypt' to this key uses; 'gpg --encrypt -r' itself pins no family."

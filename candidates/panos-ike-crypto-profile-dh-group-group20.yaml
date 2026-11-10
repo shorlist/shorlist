@@ -1,0 +1,29 @@
+id: "candidate"
+title: "PAN-OS: IKE crypto profile dh-group group20"
+family: "ECDH"
+parameter_set: "IKE group 20"
+role: "key_establishment"
+form_kind: "cli"
+language_or_product: "Palo Alto Networks PAN-OS"
+negative: false
+literal: "set network ike crypto-profiles ike-crypto-profiles IKE-1 dh-group group20"
+context_filename: "panos-set.txt"
+context_template: |
+  set network ike crypto-profiles ike-crypto-profiles IKE-1 dh-group group20
+expected:
+  family: "ECDH"
+  role: "key_establishment"
+  size: 384
+source:
+  - url: "https://github.com/PaloAltoNetworks/pan-os-python/blob/develop/panos/network.py"
+    section: "class IkeCryptoProfile: xpath and dh_group parameter"
+    read_at: "2026-11-10"
+    quote: "dh_group (string/list): phase-1 DH group: group1, group2, group5, group14, group19 (7.0+), or group20 (7.0+)."
+  - url: "https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-8"
+    section: "Transform Type 4 - Key Exchange Method Transform IDs (CSV ikev2-parameters-8.csv)"
+    read_at: "2026-11-10"
+    quote: "20,384-bit random ECP group"
+status: "candidate"
+candidate_reason: "Only Palo Alto's Python SDK was read (value names, and the XML path /network/ike/crypto-profiles/ike-crypto-profiles with member dh-group). The set-command spelling of the literal is inferred from that path, not read on a PAN-OS page: the PAN-OS admin guide URL tried returned 404. Needs a direct read of the PAN-OS CLI or admin guide, and a syntax check for set-format files."
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"

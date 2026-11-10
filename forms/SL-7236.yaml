@@ -1,0 +1,49 @@
+id: "SL-7236"
+title: "OPC UA: SecurityPolicy Aes256_Sha256_RsaPss (RSA)"
+family: "RSA"
+parameter_set: "RSA 2048-4096"
+role: "both"
+form_kind: "config_value"
+language_or_product: "OPC UA (UA-.NETStandard 2.0.1 ApplicationConfiguration XML)"
+negative: false
+literal: "<SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Aes256_Sha256_RsaPss</SecurityPolicyUri>"
+context_filename: "Opc.Ua.Server.Config.xml"
+context_template: |
+  <?xml version="1.0" encoding="utf-8"?>
+  <ApplicationConfiguration xmlns="http://opcfoundation.org/UA/SDK/Configuration.xsd">
+    <ApplicationName>Line 4 PLC gateway</ApplicationName>
+    <ApplicationType>Server_0</ApplicationType>
+    <ServerConfiguration>
+      <SecurityPolicies>
+        <ServerSecurityPolicy>
+          <SecurityMode>SignAndEncrypt_3</SecurityMode>
+          <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Aes256_Sha256_RsaPss</SecurityPolicyUri>
+        </ServerSecurityPolicy>
+      </SecurityPolicies>
+    </ServerConfiguration>
+  </ApplicationConfiguration>
+expected:
+  family: "RSA"
+  role: "undetermined"
+  size: "undetermined"
+source:
+  - url: "https://github.com/OPCFoundation/UA-.NETStandard/blob/2.0.1/samples/Reference/ConsoleReferenceServer/Quickstarts.ReferenceServer.Config.xml"
+    section: "Quickstarts.ReferenceServer.Config.xml: ServerConfiguration/SecurityPolicies"
+    read_at: "2026-11-10"
+    quote: "<SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256</SecurityPolicyUri>"
+  - url: "https://github.com/OPCFoundation/UA-.NETStandard/blob/2.0.1/src/Opc.Ua.Core/Security/SecurityPolicies.cs"
+    section: "SecurityPolicies.BaseUri"
+    read_at: "2026-11-10"
+    quote: "public const string BaseUri = \"http://opcfoundation.org/UA/SecurityPolicy#\";"
+  - url: "https://github.com/OPCFoundation/UA-.NETStandard/blob/2.0.1/src/Opc.Ua.Core/Security/SecurityPolicies.cs"
+    section: "SecurityPolicies.Aes256_Sha256_RsaPss"
+    read_at: "2026-11-10"
+    quote: "public const string Aes256_Sha256_RsaPss = BaseUri + \"Aes256_Sha256_RsaPss\";"
+  - url: "https://github.com/OPCFoundation/UA-.NETStandard/blob/2.0.1/src/Opc.Ua.Core/Security/SecurityPolicyInfo.cs"
+    section: "SecurityPolicyInfo.Aes256_Sha256_RsaPss"
+    read_at: "2026-11-10"
+    quote: "AsymmetricEncryptionAlgorithm = AsymmetricEncryptionAlgorithm.RsaOaepSha256, AsymmetricSignatureAlgorithm = AsymmetricSignatureAlgorithm.RsaPssSha256, CertificateKeyFamily = CertificateKeyFamily.RSA,"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "OPC Foundation's .NET reference stack (UA-.NETStandard 2.0.1) application configuration; the policy URI is the one defined in OPC 10000-7 and is the same in every OPC UA stack. RSA-PSS signs and RSA-OAEP encrypts in the handshake: role both."

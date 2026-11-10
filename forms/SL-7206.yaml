@@ -1,0 +1,31 @@
+id: "SL-7206"
+title: "OpenSSL CLI: cms -encrypt a backup to an RSA-OAEP recipient"
+family: "RSA"
+cyclonedx_family: "RSAES-OAEP"
+parameter_set: null
+role: "key_establishment"
+form_kind: "cli"
+language_or_product: "OpenSSL CLI 3.5 (cms)"
+negative: false
+literal: "openssl cms -encrypt -in backup.tar -out backup.tar.cms -recip cert.pem -keyopt rsa_padding_mode:oaep"
+context_filename: "backup.sh"
+context_template: |
+  #!/bin/sh
+  openssl cms -encrypt -in backup.tar -out backup.tar.cms -recip cert.pem -keyopt rsa_padding_mode:oaep
+expected:
+  family: "RSA"
+  role: "key_establishment"
+  size: "undetermined"
+source:
+  - url: "https://docs.openssl.org/3.5/man1/openssl-cms/"
+    section: "OPTIONS: -keyopt name:parameter"
+    read_at: "2026-11-10"
+    quote: "It can currently be used to set RSA-PSS for signing, RSA-OAEP for encryption or to modify default parameters for ECDH."
+  - url: "https://docs.openssl.org/3.5/man1/openssl-cms/"
+    section: "EXAMPLES"
+    read_at: "2026-11-10"
+    quote: "Create an encrypted message using RSA-OAEP: openssl cms -encrypt -in plain.txt -out mail.msg \\ -recip cert.pem -keyopt rsa_padding_mode:oaep"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "The recipient key wraps the content-encryption key (CMS KeyTransRecipientInfo). A bare 'openssl cms -encrypt' or 'openssl smime -encrypt' without -keyopt pins no family: the recipient certificate decides it."

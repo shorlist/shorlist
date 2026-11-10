@@ -1,0 +1,30 @@
+id: "SL-7242"
+title: "MikroTik RouterOS: IPsec profile dh-group modp3072"
+family: "DH"
+parameter_set: "IKE group 15"
+role: "key_establishment"
+form_kind: "config_value"
+language_or_product: "MikroTik RouterOS 7"
+negative: false
+literal: "/ip ipsec profile add dh-group=modp3072 name=ike-site1"
+context_filename: "ipsec.rsc"
+context_template: |
+  # RouterOS 7 configuration
+  /ip ipsec profile add dh-group=modp3072 name=ike-site1
+expected:
+  family: "DH"
+  role: "key_establishment"
+  size: 3072
+source:
+  - url: "https://help.mikrotik.com/docs/spaces/ROS/pages/11993097/IPsec"
+    section: "Profiles: dh-group"
+    read_at: "2026-11-10"
+    quote: "dh-group ( modp768 | modp1024 | modp1536 | modp2048 | modp3072 | modp4096 | modp6144 | modp8192 | ecp256 | ecp384 | ecp521 ; Default: modp1024,modp2048 ) Diffie-Hellman group"
+  - url: "https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-8"
+    section: "Transform Type 4 - Key Exchange Method Transform IDs (CSV ikev2-parameters-8.csv)"
+    read_at: "2026-11-10"
+    quote: "15,3072-bit MODP Group"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "RouterOS 7 export script (.rsc). The group name is the IKE group; its size is from the IANA registry."

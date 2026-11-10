@@ -172,6 +172,14 @@ def test_catalogue_hash_is_stable_and_content_sensitive(tmp_path):
     ("a.py", "x = 1\n", True),
     ("a.rs", "use ring::agreement;\n\nfn main() {\n    let alg = &agreement::X25519;\n}\n", True),
     ("a.c", "#include <mbedtls/pk.h>\n\nint main(void)\n{\n    return 0;\n}\n", True),
+    ("ipsec.rsc", "# RouterOS\n/ip ipsec profile add dh-group=ecp384 name=p1\n", True),
+    ("ipsec.rsc", "ip ipsec profile add dh-group=ecp384\n", False),
+    ("postgresql.conf", "ssl = on\nssl_groups = 'secp384r1'\n", True),
+    ("postgresql.conf", "ssl_groups 'secp384r1'\n", False),
+    ("server.conf", "server {\n    ca_key_type = \"ec-p384\"\n}\n", True),
+    ("server.conf", "server {\n    ca_key_type = \"ec-p384\"\n", False),
+    ("App.Config.xml", "<a><b>x</b></a>\n", True),
+    ("App.Config.xml", "<a><b>x</a>\n", False),
 ])
 def test_parsecheck_rejects_broken_templates(name, text, ok):
     assert (check(name, text)[0] != FAIL) is ok

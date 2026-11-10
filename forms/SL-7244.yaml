@@ -1,0 +1,26 @@
+id: "SL-7244"
+title: "MikroTik RouterOS: SSH host-key-type ed25519"
+family: "EdDSA"
+parameter_set: "Ed25519"
+role: "signature"
+form_kind: "config_value"
+language_or_product: "MikroTik RouterOS 7"
+negative: false
+literal: "/ip ssh set host-key-type=ed25519"
+context_filename: "ssh.rsc"
+context_template: |
+  # RouterOS 7 configuration
+  /ip ssh set host-key-type=ed25519
+expected:
+  family: "EdDSA"
+  role: "signature"
+  size: "undetermined"
+source:
+  - url: "https://help.mikrotik.com/docs/spaces/ROS/pages/132350014/SSH"
+    section: "Properties: host-key-type"
+    read_at: "2026-11-10"
+    quote: "host-key-type ( ed25519 | rsa ; Default: rsa ) Select host key type"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "RouterOS 7 export script (.rsc)."

@@ -1,0 +1,26 @@
+id: "SL-7246"
+title: "F5 BIG-IP: cipher rule dh-groups P384"
+family: "ECDH"
+parameter_set: "P-384"
+role: "key_establishment"
+form_kind: "cli"
+language_or_product: "F5 BIG-IP tmsh (v17)"
+negative: false
+literal: "tmsh create ltm cipher rule rule-1 dh-groups P384"
+context_filename: "f5-tls.sh"
+context_template: |
+  #!/bin/sh
+  tmsh create ltm cipher rule rule-1 dh-groups P384
+expected:
+  family: "ECDH"
+  role: "key_establishment"
+  size: 384
+source:
+  - url: "https://clouddocs.f5.com/cli/tmsh-reference/latest/modules/ltm/ltm_cipher_rule.html"
+    section: "ltm cipher rule: OPTIONS, dh-groups"
+    read_at: "2026-11-10"
+    quote: "The available named groups are: P256, P384, X25519"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "F5 TMSH Reference v17. A cipher rule is gathered into a cipher group and attached to a client-ssl or server-ssl profile."

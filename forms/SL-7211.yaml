@@ -1,0 +1,30 @@
+id: "SL-7211"
+title: "age: encrypt a backup to an X25519 recipient (age1...)"
+family: "X25519"
+parameter_set: "X25519"
+role: "key_establishment"
+form_kind: "cli"
+language_or_product: "age v1.3"
+negative: false
+literal: "age -r age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p -o backup.tar.gz.age backup.tar.gz"
+context_filename: "backup.sh"
+context_template: |
+  #!/bin/sh
+  age -r age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p -o backup.tar.gz.age backup.tar.gz
+expected:
+  family: "X25519"
+  role: "key_establishment"
+  size: "undetermined"
+source:
+  - url: "https://github.com/FiloSottile/age/blob/v1.3.1/doc/age.1.ronn"
+    section: "age(1): DESCRIPTION"
+    read_at: "2026-11-10"
+    quote: "strong encryption based on X25519 for classic keys"
+  - url: "https://github.com/FiloSottile/age/blob/v1.3.1/README.md"
+    section: "Usage"
+    read_at: "2026-11-10"
+    quote: "age -r age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p > data.tar.gz.age"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "The recipient is the public key from age's own README. A native recipient beginning with age1 (not age1pq1, age1tag1 or a plugin prefix) is an X25519 key; the prefix is what pins the family."

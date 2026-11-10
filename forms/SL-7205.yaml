@@ -1,0 +1,31 @@
+id: "SL-7205"
+title: "Decoy: commented-out ssl_groups in postgresql.conf.sample"
+family: "X25519"
+parameter_set: null
+role: "n.a."
+form_kind: "config_value"
+language_or_product: "PostgreSQL 18 (postgresql.conf)"
+negative: true
+decoy_class: "comment"
+literal: "#ssl_groups = 'X25519:prime256v1'"
+context_filename: "postgresql.conf"
+context_template: |
+  listen_addresses = '*'
+  #ssl_groups = 'X25519:prime256v1'
+expected:
+  family: "X25519"
+  role: "key_establishment"
+  size: "undetermined"
+source:
+  - url: "https://github.com/postgres/postgres/blob/f5c41f6681c910b3f69951bf6fb97c6d74605d25/src/backend/utils/misc/postgresql.conf.sample"
+    section: "postgresql.conf.sample, SSL section"
+    read_at: "2026-11-10"
+    quote: "#ssl_groups = 'X25519:prime256v1'"
+  - url: "https://www.postgresql.org/docs/18/runtime-config-connection.html"
+    section: "19.3.3 SSL: ssl_groups (string)"
+    read_at: "2026-11-10"
+    quote: "The default is X25519:prime256v1"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "The line is the shipped sample file's comment, verbatim. It sets nothing; ssl is not even on in the template. Not a use of X25519 or P-256 on this line."

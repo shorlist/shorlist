@@ -1,0 +1,28 @@
+id: "SL-7229"
+title: "SPIRE server: ca_key_type rsa-4096"
+family: "RSA"
+parameter_set: "4096"
+role: "signature"
+form_kind: "config_value"
+language_or_product: "SPIRE v1.16 (server.conf)"
+negative: false
+literal: "ca_key_type = \"rsa-4096\""
+context_filename: "server.conf"
+context_template: |
+  server {
+      trust_domain = "example.org"
+      ca_key_type = "rsa-4096"
+  }
+expected:
+  family: "RSA"
+  role: "signature"
+  size: 4096
+source:
+  - url: "https://github.com/spiffe/spire/blob/v1.16.0/doc/spire_server.md"
+    section: "Server configuration file: ca_key_type"
+    read_at: "2026-11-10"
+    quote: "The key type used for the server CA (both X509 and JWT)"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "SPIRE v1.16 configuration (HCL). Allowed values in the source: rsa-2048, rsa-4096, ec-p256, ec-p384."

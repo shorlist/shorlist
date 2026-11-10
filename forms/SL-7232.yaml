@@ -1,0 +1,39 @@
+id: "SL-7232"
+title: "OAuth client metadata: private_key_jwt signed with ES256"
+family: "ECDSA"
+parameter_set: "P-256"
+role: "signature"
+form_kind: "config_value"
+language_or_product: "OpenID Connect / OAuth client registration (JSON)"
+negative: false
+literal: "\"token_endpoint_auth_signing_alg\": \"ES256\","
+context_filename: "client.json"
+context_template: |
+  {
+    "client_name": "backup-agent",
+    "grant_types": ["client_credentials"],
+    "token_endpoint_auth_method": "private_key_jwt",
+    "token_endpoint_auth_signing_alg": "ES256",
+    "jwks_uri": "https://agent.example.org/jwks.json"
+  }
+expected:
+  family: "ECDSA"
+  role: "signature"
+  size: 256
+source:
+  - url: "https://openid.net/specs/openid-connect-registration-1_0.html"
+    section: "2. Client Metadata: token_endpoint_auth_signing_alg"
+    read_at: "2026-11-10"
+    quote: "used to authenticate the Client at the Token Endpoint for the private_key_jwt and client_secret_jwt authentication methods."
+  - url: "https://openid.net/specs/openid-connect-core-1_0.html"
+    section: "9. Client Authentication: private_key_jwt"
+    read_at: "2026-11-10"
+    quote: "Clients that have registered a public key sign a JWT using that key."
+  - url: "https://www.rfc-editor.org/rfc/rfc7518.txt"
+    section: "3.1. \"alg\" (Algorithm) Header Parameter Values for JWS"
+    read_at: "2026-11-10"
+    quote: "| ES256 | ECDSA using P-256 and SHA-256 |"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "OAuth client (e.g. an agent) registered for private_key_jwt client authentication (OIDC Dynamic Client Registration 1.0; RFC 7523). 'token_endpoint_auth_method: private_key_jwt' alone pins no family; the signing alg does."

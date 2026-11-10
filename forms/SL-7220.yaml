@@ -1,0 +1,59 @@
+id: "SL-7220"
+title: "Envoy: tls_params ecdh_curves X25519"
+family: "X25519"
+parameter_set: "X25519"
+role: "key_establishment"
+form_kind: "config_value"
+language_or_product: "Envoy v1.40 (YAML bootstrap)"
+negative: false
+literal: "ecdh_curves: [X25519]"
+context_filename: "envoy.yaml"
+context_template: |
+  static_resources:
+    listeners:
+    - name: tls
+      address:
+        socket_address: {address: 0.0.0.0, port_value: 443}
+      filter_chains:
+      - filters:
+        - name: envoy.filters.network.tcp_proxy
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy
+            stat_prefix: tls
+            cluster: backend
+        transport_socket:
+          name: envoy.transport_sockets.tls
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+            common_tls_context:
+              tls_params:
+                ecdh_curves: [X25519]
+              tls_certificates:
+              - certificate_chain: {filename: /etc/envoy/cert.pem}
+                private_key: {filename: /etc/envoy/key.pem}
+    clusters:
+    - name: backend
+      load_assignment:
+        cluster_name: backend
+        endpoints:
+        - lb_endpoints:
+          - endpoint:
+              address:
+                socket_address: {address: 127.0.0.1, port_value: 8080}
+expected:
+  family: "X25519"
+  role: "key_establishment"
+  size: "undetermined"
+source:
+  - url: "https://www.envoyproxy.io/docs/envoy/v1.40.2/api-v3/extensions/transport_sockets/tls/v3/common.proto"
+    section: "extensions.transport_sockets.tls.v3.TlsParameters: ecdh_curves"
+    read_at: "2026-11-10"
+    quote: "If specified, the TLS connection will only support the specified ECDH curves."
+  - url: "https://www.envoyproxy.io/docs/envoy/v1.40.2/api-v3/extensions/transport_sockets/tls/v3/common.proto"
+    section: "extensions.transport_sockets.tls.v3.TlsParameters: ecdh_curves"
+    read_at: "2026-11-10"
+    quote: "In non-FIPS builds, the default curves are: X25519 P-256"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "Envoy v1.40 bootstrap; the certificate file names are placeholders and carry no algorithm."

@@ -1,0 +1,37 @@
+id: "SL-7203"
+title: "PostgreSQL 18: ssl_groups X25519MLKEM768"
+family: "ML-KEM"
+parameter_set: "X25519MLKEM768"
+role: "key_establishment"
+form_kind: "config_value"
+language_or_product: "PostgreSQL 18 (postgresql.conf, OpenSSL 3.5)"
+negative: false
+literal: "ssl_groups = 'X25519MLKEM768'"
+context_filename: "postgresql.conf"
+context_template: |
+  listen_addresses = '*'
+  ssl = on
+  ssl_cert_file = 'server.crt'
+  ssl_key_file = 'server.key'
+  ssl_groups = 'X25519MLKEM768'
+expected:
+  family: "ML-KEM"
+  role: "key_establishment"
+  size: "undetermined"
+source:
+  - url: "https://www.postgresql.org/docs/18/runtime-config-connection.html"
+    section: "19.3.3 SSL: ssl_groups (string)"
+    read_at: "2026-11-10"
+    quote: "Specifies the named group to use for TLS key exchange."
+  - url: "https://www.postgresql.org/docs/18/runtime-config-connection.html"
+    section: "19.3.3 SSL: ssl_groups (string)"
+    read_at: "2026-11-10"
+    quote: "Multiple groups can be specified by using a colon-separated list."
+  - url: "https://docs.openssl.org/3.5/man3/SSL_CTX_set1_curves/"
+    section: "SSL_CTX_set1_groups_list: DEFAULT group list and keyshares"
+    read_at: "2026-11-10"
+    quote: "X25519MLKEM768 as one of the predicted keyshares."
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "Hybrid: scored on the post-quantum half (ML-KEM), as SL-0011. PostgreSQL passes the value to OpenSSL; the group is accepted when the linked OpenSSL supports it (3.5 or later). PostgreSQL's page does not list the group itself. The certificate and key file names are placeholders and carry no algorithm."

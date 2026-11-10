@@ -1,0 +1,35 @@
+id: "SL-7224"
+title: "Istio: proxyMetadata ECC_SIGNATURE_ALGORITHM ECDSA (workload keys)"
+family: "ECDSA"
+parameter_set: null
+role: "signature"
+form_kind: "config_value"
+language_or_product: "Istio 1.32 (IstioOperator, pilot-agent)"
+negative: false
+literal: "ECC_SIGNATURE_ALGORITHM: ECDSA"
+context_filename: "istio-operator.yaml"
+context_template: |
+  apiVersion: install.istio.io/v1alpha1
+  kind: IstioOperator
+  spec:
+    meshConfig:
+      defaultConfig:
+        proxyMetadata:
+          ECC_SIGNATURE_ALGORITHM: ECDSA
+expected:
+  family: "ECDSA"
+  role: "signature"
+  size: "undetermined"
+source:
+  - url: "https://istio.io/v1.32/docs/reference/commands/pilot-agent/"
+    section: "pilot-agent: Environment variables, ECC_SIGNATURE_ALGORITHM"
+    read_at: "2026-11-10"
+    quote: "ECC_SIGNATURE_ALGORITHM String The type of ECC signature algorithm to use when generating private keys"
+  - url: "https://istio.io/v1.32/docs/reference/commands/pilot-agent/"
+    section: "pilot-agent: Environment variables, ECC_CURVE"
+    read_at: "2026-11-10"
+    quote: "ECC_CURVE String P256 The elliptic curve to use when ECC_SIGNATURE_ALGORITHM is set to ECDSA"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "The curve is set apart, by ECC_CURVE (default P256); this line pins ECDSA only."

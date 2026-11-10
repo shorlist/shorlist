@@ -1,0 +1,36 @@
+id: "SL-1180"
+title: "Cisco IOS XE: IKEv2 proposal group 14"
+family: "DH"
+parameter_set: "IKE group 14"
+role: "key_establishment"
+form_kind: "config_value"
+language_or_product: "Cisco IOS XE"
+negative: false
+literal: " group 14"
+context_filename: "running-config"
+context_template: |
+  crypto ikev2 proposal PROP-1
+   group 14
+  !
+  end
+expected:
+  family: "DH"
+  role: "key_establishment"
+  size: 2048
+source:
+  - url: "https://github.com/YangModels/yang/blob/0bb864b5a4c0e17d7c735500cf176e0f2dc73136/vendor/cisco/xe/17181/Cisco-IOS-XE-crypto.yang"
+    section: "Cisco-IOS-XE-crypto.yang: crypto ikev2 proposal, container group"
+    read_at: "2026-11-10"
+    quote: "Set the Diffie-Hellman group(s)"
+  - url: "https://github.com/YangModels/yang/blob/0bb864b5a4c0e17d7c735500cf176e0f2dc73136/vendor/cisco/xe/17181/Cisco-IOS-XE-crypto.yang"
+    section: "Cisco-IOS-XE-crypto.yang: crypto ikev2 proposal, group/fourteen"
+    read_at: "2026-11-10"
+    quote: "leaf fourteen { description \"DH 2048 MODP\";"
+  - url: "https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-8"
+    section: "Transform Type 4 - Key Exchange Method Transform IDs (CSV ikev2-parameters-8.csv)"
+    read_at: "2026-11-10"
+    quote: "14,2048-bit MODP Group"
+status: "verified-source"
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "Promoted from candidates/ on 2026-11-10. The Cisco IOS XE configuration guide (cisco.com) refused a direct read (HTTP 403), so the source is Cisco's own published YANG model for IOS XE 17.18.1 (organization \"Cisco Systems, Inc.\"), whose native model mirrors the CLI: the IKEv2 proposal container 'group' has one leaf per CLI group number (leaf 'nineteen' for 'group 19'). The spelled-out leaf name to CLI number correspondence is read from the container, not quoted from a CLI page. Config guide, not read: https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/sec-vpn/b-security-vpn/m_sec-cfg-ikev2-flex.html"

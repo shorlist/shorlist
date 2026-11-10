@@ -1,0 +1,31 @@
+id: "candidate"
+title: "GnuPG: add a ky768_bp256 (Kyber-768 + brainpoolP256r1) encryption subkey"
+family: "ML-KEM"
+parameter_set: "Kyber-768 + brainpoolP256r1 (composite)"
+role: "key_establishment"
+form_kind: "cli"
+language_or_product: "GnuPG 2.5 (gpg)"
+negative: false
+literal: "gpg --batch --quick-add-key \"$1\" ky768_bp256 encr"
+context_filename: "backup-key.sh"
+context_template: |
+  #!/bin/sh
+  gpg --batch --quick-add-key "$1" ky768_bp256 encr
+expected:
+  family: "ML-KEM"
+  role: "key_establishment"
+  size: "undetermined"
+source:
+  - url: "https://github.com/gpg/gnupg/blob/gnupg-2.5.24/g10/keygen.c"
+    section: "parse_key_parameter_part: algorithm strings"
+    read_at: "2026-11-10"
+    quote: "ky768_bp384 := Kyber-768 with BrainpoolP256r1 as second algo"
+  - url: "https://github.com/gpg/gnupg/blob/gnupg-2.5.24/NEWS"
+    section: "NEWS, Noteworthy changes"
+    read_at: "2026-11-10"
+    quote: "gpg: In 9980 mode support PQC encryption using ML-KEM (aka Kyber)"
+status: "candidate"
+candidate_reason: "GnuPG's own sources call the ky768_* composite 'Kyber'; the NEWS line ties ML-KEM to the separate RFC 9980 mode ('mlk768'). Not settled from what was read whether ky768_bp256 is FIPS 203 ML-KEM or pre-standard Kyber, which the vocabulary does not have. The keygen.c comment example is also inconsistent (ky768_bp384 described with BrainpoolP256r1)."
+added_by: "Stanimir Tenev (Elkan Electronic)"
+added_at: "2026-11-10"
+notes: "GnuPG's 'pqc' default (PQC_STD_KEY_PARAM_SUB \"kyber768_bp256/encr\") resolves to the same composite."

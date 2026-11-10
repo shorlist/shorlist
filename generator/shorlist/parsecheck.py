@@ -18,11 +18,15 @@
 | httpd.conf           | Apache: 'Directive args' or balanced '<Section>' tags     |
 | fortigate.conf       | FortiOS: config/edit/set/unset/next/end; balanced         |
 | running-config       | Cisco IOS: '!' or a command; one-space indents; 'end'     |
+| *.rsc                | MikroTik RouterOS: '# comment' or '/menu path [args]'     |
+| postgresql.conf      | each line is a comment or key = value                     |
+| server.conf, agent.conf | SPIRE (HCL): as *.tf, *.hcl                           |
 | nginx.conf, *.conf   | balanced braces; every statement ends in ';', '{' or '}'  |
 | sshd_config          | each line is 'Keyword value', Keyword alphabetic           |
 | java.security        | each line is a comment or key=value                       |
 | *.yaml, *.yml        | yaml.safe_load; the document must be a mapping            |
 | *.json               | json.loads; the document must be an object or an array    |
+| *.xml                | xml.etree.ElementTree parses it                           |
 | *.tf, *.hcl          | strings closed on their line; balanced (), [] and {}      |
 | *.pem                | BEGIN/END labels match (RFC 7468); base64 body            |
 | authorized_keys      | each line: [options] keytype base64 [comment]             |
@@ -37,6 +41,7 @@ from __future__ import annotations
 
 import ast
 import json
+import xml.etree.ElementTree as ET
 import re
 import shutil
 import subprocess
@@ -189,6 +194,21 @@ def _ios(text: str) -> tuple[str, str]:
     return (OK, "") if last == "end" else (FAIL, "does not end with 'end'")
 
 
+def _routeros(text: str) -> tuple[str, str]:
+    for n, raw in _lines(text, "#"):
+        if not re.fullmatch(r"/[a-z0-9-]+( [a-z0-9-]+)*( [a-z0-9-]+=\S+)*", raw):
+            return FAIL, f"line {n}: not a RouterOS command '/menu path [name=value ...]'"
+    return OK, ""
+
+
+def _xml(text: str) -> tuple[str, str]:
+    try:
+        ET.fromstring(text)
+    except ET.ParseError as e:
+        return FAIL, str(e)
+    return OK, ""
+
+
 def _yaml(text: str) -> tuple[str, str]:
     try:
         doc = yaml.safe_load(text)
@@ -325,6 +345,12 @@ def check(filename: str, text: str) -> tuple[str, str]:
         return _ios(text)
     if filename == "sshd_config":
         return _sshd(text)
+    if filename.endswith(".rsc"):
+        return _routeros(text)
+    if filename == "postgresql.conf":
+        return _properties(text)
+    if filename in ("server.conf", "agent.conf"):
+        return _hcl(text)
     if filename == "nginx.conf" or filename.endswith(".conf"):
         return _nginx(text)
     if filename == "java.security":
@@ -340,6 +366,8 @@ def check(filename: str, text: str) -> tuple[str, str]:
         return _yaml(text)
     if filename.endswith(".json"):
         return _json(text)
+    if filename.endswith(".xml"):
+        return _xml(text)
     if filename.endswith((".tf", ".hcl")):
         return _hcl(text)
     if filename.endswith(".pem"):
