@@ -313,8 +313,7 @@ Results are in [`results/live/`](results/live/).
 ## Results
 
 Measured on ShorList 0.3.0, catalogue sha256 `084dce514b73060b…`, with the same scanner versions
-as on 0.2.0. Semgrep and cdxgen have not been re-run on 0.3.0 yet; their 0.2.0 figures are
-given in a table of their own, on the 0.2.0 denominators. The 0.2.0 results stay in
+as on 0.2.0. The 0.2.0 results stay in
 [`results/v0.2.0/`](results/v0.2.0/), the v0.1 results (30 rows, quantum axis only) in
 [`results/v0.1.1/`](results/v0.1.1/).
 
@@ -335,16 +334,10 @@ are the fairer comparison. Both columns are always given.
 | qrp-mcp 0.44.0 | 1130 | 642 | 26 | 57 | 247 (0) | 0 | [md](results/v0.3.0/qrp-mcp-0.44.0.md) |
 | CSNP CryptoScan v1.5.0 | 266 | 207 | 47 | 139 | 123 (14) | 0 | [md](results/v0.3.0/cryptoscan-1.5.0.md) |
 | qscan 1.0.0 ([EthanCratchley/qscan](https://github.com/EthanCratchley/qscan) @8b73799) | 82 | 37 | 16 | 0 | 54 (4) | 0 | [md](results/v0.3.0/qscan-1.0.0.md) |
+| cdxgen 13.6.0 (`cbom`) | 13 | 13 | 0 | 0 | 6 (0) | 0 | [md](results/v0.3.0/cdxgen-13.6.0.md) |
+| Semgrep 1.183.0 + semgrep-rules @16b9e6d | 0 | 0 | 0 | 0 | 33 (0) | 5 (+6 wrong class) | [md](results/v0.3.0/semgrep-1.183.0.md) |
 
-Not re-run on 0.3.0; measured on ShorList 0.2.0 (catalogue sha256 `5d0e18007d740318…`, 2035
-rows), so the denominators are 0.2.0's:
-
-| scanner | quantum: hit / 1368 | without registry rows: hit / 816 | decoys reported as a use / 169 | parent only | weak: hit / 280 (false alarm / 31) | defect: hit / 162 | result |
-|---|---|---|---|---|---|---|---|
-| cdxgen 13.6.0 (`cbom`) | 13 | 13 | 0 | 0 | 6 (0) | 0 | [md](results/v0.2.0/cdxgen-13.6.0.md) (0.2.0) |
-| Semgrep 1.183.0 + semgrep-rules @16b9e6d | 0 | 0 | 0 | 0 | 33 (0) | 5 (+6 wrong class) | [md](results/v0.2.0/semgrep-1.183.0.md) (0.2.0) |
-
-On 0.2.0, Semgrep was the only tool that scored on the defect axis: 5 hits and 6 reports of the
+Semgrep is the only tool that scores on the defect axis: 5 hits and 6 reports of the
 wrong CWE class on 162 wrong files, and 11 false alarms on the 162 fixed files planted beside
 them. Its 64 rule files look for misuse, not for which public-key algorithm is in use, so the
 0 on the quantum axis is expected. The other four report no misuse; they are inventory tools.
@@ -353,7 +346,8 @@ The weak and defect axes did not change in 0.3.0 (all 64 new rows are quantum ro
 Adapter caveats (unchanged since v0.1, details in each adapter): CryptoScan's `ECC` maps to
 `EC`, so its ECDSA and ECDH rows score `parent only`, and it reports no size; qscan reports
 no role; cdxgen ran one fixed command, no `-t`, and its evidence step is skipped on trees
-that list no package; Semgrep's family comes from `check_id` tokens.
+that list no package; Semgrep's family comes from `check_id` tokens. cdxgen also lists three of the new
+PEM files (SL-3641, SL-3642, SL-3646) without a line: `file_only`, not a hit.
 
 ### Tools not designed for source trees
 
@@ -371,7 +365,7 @@ both tools reported 0 because they could not parse the key, not because they mis
 
 The open-source scanners were run in throwaway containers with no network during the scan;
 images, versions and invocations are recorded in each adapter and result file. Semgrep and
-cdxgen were run (on 0.2.0) on GitHub's runners in 12 shards
+cdxgen were run on GitHub's runners in 12 shards
 ([`measure.yml`](.github/workflows/measure.yml)) and merged with `shorlist merge`; the merged
 result is the one an unsharded run gives. Where a scanner's output has no role, the scorer
 takes the family's intrinsic role from `families.yaml`, so `role_ok` is not evidence about
