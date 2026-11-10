@@ -122,7 +122,7 @@ broken down by `form_kind`, family and language or product.
 
 ## Scope of v0.2
 
-2035 rows, every one checked against a primary source; 75 more wait in
+2035 rows, every one checked against a primary source; 78 more wait in
 [`candidates/`](candidates/) (no primary source yet, or no family in the vocabulary).
 
 | axis | rows | positive | decoys | families |
