@@ -10,12 +10,14 @@ from .cdxgen import CdxgenAdapter
 from .cipheriq import CipherIQAdapter, CipherIQServicesAdapter
 from .cryptoscan import CryptoScanAdapter
 from .qrp_mcp import QrpMcpAdapter
+from .qci_pqc import QciPqcAdapter
 from .qscan import QscanAdapter
 from .semgrep import SemgrepAdapter
 
 ADAPTERS: dict[str, type[Adapter]] = {
     a.name: a for a in (QrpMcpAdapter, CryptoScanAdapter, CbomkitTheiaAdapter, CipherIQAdapter,
-                        CipherIQServicesAdapter, CdxgenAdapter, QscanAdapter, SemgrepAdapter)
+                        CipherIQServicesAdapter, CdxgenAdapter, QscanAdapter, SemgrepAdapter,
+                        QciPqcAdapter)
 }
 
 __all__ = ["ADAPTERS", "Adapter", "Record"]

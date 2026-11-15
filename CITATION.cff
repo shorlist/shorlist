@@ -4,19 +4,19 @@ title: "ShorList: an open catalogue of cryptographic forms"
 doi: "10.5281/zenodo.23974515"
 repository-code: "https://github.com/shorlist/shorlist"
 abstract: >-
-  The open catalogue of the cryptographic forms Shor's algorithm breaks, and the
+  An open catalogue of the cryptographic forms Shor's algorithm breaks, and the
   post-quantum ones that replace them. Each row is one form in which a public-key
   algorithm appears in source code or configuration, with a minimal context file, the
   expected detection and a primary source; decoy rows measure false alarms. A generator
   plants each row and scores a scanner's output against it, repeatably.
 type: dataset
-version: 0.3.0
+version: 0.3.1
 authors:
   - family-names: Tenev
     given-names: Stanimir
     affiliation: Elkan Electronic
 license: CC-BY-4.0
-date-released: 2026-11-10
+date-released: 2026-11-15
 keywords:
   - cryptography
   - post-quantum cryptography

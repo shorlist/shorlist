@@ -14,13 +14,14 @@ from shorlist.adapters.base import Record  # noqa: E402
 from shorlist.adapters.cdxgen import CdxgenAdapter  # noqa: E402
 from shorlist.adapters.cipheriq import CipherIQAdapter, CipherIQServicesAdapter  # noqa: E402
 from shorlist.adapters.cryptoscan import CryptoScanAdapter  # noqa: E402
+from shorlist.adapters.qci_pqc import QciPqcAdapter  # noqa: E402
 from shorlist.adapters.qscan import QscanAdapter  # noqa: E402
 from shorlist.adapters.semgrep import SemgrepAdapter, family_from_check_id  # noqa: E402
 
 
 def test_all_adapters_registered():
     assert {"qrp-mcp", "cryptoscan", "cbomkit-theia", "cipheriq-cbom-generator",
-            "cipheriq-cbom-generator-services", "cdxgen", "qscan", "semgrep"} <= set(ADAPTERS)
+            "cipheriq-cbom-generator-services", "cdxgen", "qscan", "semgrep", "qci-pqc"} <= set(ADAPTERS)
 
 
 def test_family_uses_only_the_families_yaml_vocabulary():
@@ -125,6 +126,18 @@ def test_qscan_parse():
                                           {"name": "qscan:filePath", "value": "src/crypto_utils.py"},
                                           {"name": "qscan:lineNumber", "value": "42"}]}]}
     assert QscanAdapter.parse(bom) == [Record("src/crypto_utils.py", 42, "RSA", None, 2048)]
+
+
+# qci-pqc 2.3.4.5 (Quantum-Core-Institute-Inc/qci-pqc-scanner @3bb2298): its CBOM names an EC key by
+# curve ("ECC-P-256") and a TLS hybrid group by its IANA name; a risk category names no one family,
+# so it stays as written, outside the families.yaml vocabulary, and the scorer ignores it.
+def test_qci_pqc_maps_its_spellings_and_leaves_categories_unmapped():
+    def comp(name, line):
+        return {"type": "cryptographic-asset", "name": name,
+                "cryptoProperties": {"assetType": "algorithm"},
+                "evidence": {"occurrences": [{"location": "/scan/a.conf", "line": line}]}}
+    bom = {"components": [comp("ECC-P-256", 1), comp("X25519MLKEM768", 2), comp("DH/ECDH", 3)]}
+    assert [(r.line, r.family) for r in QciPqcAdapter.parse(bom)] == [(1, "EC"), (2, "ML-KEM"), (3, "DH/ECDH")]
 
 
 # Semgrep CLI JSON output: results[].check_id, path, start.line

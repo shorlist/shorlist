@@ -6,7 +6,7 @@ post-quantum ones that replace them.**
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23974515.svg)](https://doi.org/10.5281/zenodo.23974515)
 [![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-lightgrey.svg)](LICENSE-DATA)
 [![Code: Apache-2.0](https://img.shields.io/badge/code-Apache--2.0-blue.svg)](LICENSE)
-[![Version 0.3.0](https://img.shields.io/badge/version-0.3.0-informational.svg)](VERSION)
+[![Version 0.3.1](https://img.shields.io/badge/version-0.3.1-informational.svg)](VERSION)
 [![Rows: 2099](https://img.shields.io/badge/rows-2099-success.svg)](forms/)
 [![ci](https://github.com/shorlist/shorlist/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/shorlist/shorlist/actions/workflows/ci.yml)
 
@@ -29,18 +29,18 @@ or loses nothing on the quantum axis for a weak or a defect row.
 
 ```mermaid
 flowchart LR
-    C["ShorList v0.3.0<br/>2099 rows, a primary source on each"] --> Q["quantum<br/>1601 rows (172 decoys)<br/>Shor-vulnerable + post-quantum"]
+    C["ShorList v0.3.1<br/>2099 rows, a primary source on each"] --> Q["quantum<br/>1601 rows (172 decoys)<br/>Shor-vulnerable + post-quantum"]
     C --> W["weak<br/>311 rows (31 decoys)<br/>SHA-1, MD5, 3DES, RSA-1024 …"]
     C --> D["defect<br/>187 rows (25 decoys)<br/>misuse, scored on the CWE"]
 ```
 
-Version **0.3.0** · data **CC BY 4.0** · generator **Apache-2.0** · DOI [10.5281/zenodo.23974515](https://doi.org/10.5281/zenodo.23974515)
+Version **0.3.1** · data **CC BY 4.0** · generator **Apache-2.0** · DOI [10.5281/zenodo.23974515](https://doi.org/10.5281/zenodo.23974515)
 (all versions).
 
 **Contents:** [Quick start](#quick-start) · [Use it](#use-it) · [Why](#why) ·
 [The unit of measure](#the-unit-of-measure) · [What it does not measure](#what-it-does-not-measure) ·
 [Scope of v0.3](#scope-of-v03) · [A row](#a-row) · [Running the generator](#running-the-generator) ·
-[Results](#results) · [What changed in 0.3.0](#what-changed-in-030) · [Contributing rows](#contributing-rows) ·
+[Results](#results) · [What changed in 0.3.1](#what-changed-in-031) · [in 0.3.0](#what-changed-in-030) · [Contributing rows](#contributing-rows) ·
 [Conflict of interest](#conflict-of-interest) · [Citing](#citing) · [Licences](#licences)
 
 ## Quick start
@@ -60,9 +60,9 @@ way; see [Running the generator](#running-the-generator) for the full options.
 - **Score your scanner**: write or pick an adapter and run the generator, as in
   [Quick start](#quick-start) and [Adding a scanner](#adding-a-scanner).
 - **Filter to your stack**: run only the rows for your languages and products. *Planned; not
-  in v0.3.0.*
+  in v0.3.1.*
 - **Add it to CI**: a GitHub Action that scores a scanner on every pull request. *Planned; not
-  in v0.3.0.*
+  in v0.3.1.*
 
 ## Why
 
@@ -122,6 +122,12 @@ broken down by `form_kind`, family and language or product.
   `Cipher.init` from a constant three calls away, an IV reused across messages at run
   time) is not in the catalogue.
 - **Role and key size are reported beside the outcome**, not folded into it.
+- **Hybrids are scored on the post-quantum half only.** The 54 positive rows marked hybrid in
+  their notes (TLS groups such as X25519MLKEM768, SSH `mlkem768x25519-sha256` and
+  `ssh-mldsa44-ed25519`, X-Wing, …) expect ML-KEM (50 rows) or ML-DSA (4), and the decoys that
+  name a hybrid (SL-0029, SL-6504, …) are ML-KEM decoys; `schema/families.yaml` has no hybrid family, so a scanner
+  that misses the classical half (the X25519 in X25519MLKEM768) loses nothing. None of the 43
+  key and certificate file rows (`file_format`) is a hybrid or composite key.
 
 ## Scope of v0.3
 
@@ -216,9 +222,14 @@ python -m shorlist table ../results/qrp-mcp-0.44.0.json
 
 **Scoring.** For a positive row, only records on the literal's line in the planted file,
 reported as a use, count: `hit` (the expected family), `parent_only` (only `EC` for an
-expected ECDSA/ECDH), `wrong_family`, or `miss`. For a decoy, any in-scope family reported as
+expected ECDSA/ECDH), `wrong_family`, or `miss`. `parent_only` is strict: it accepts the
+expected family's parent and nothing else, so an expected EC key reported as ECDSA, or an
+expected ECDH reported as ECDSA, is a `wrong_family`, not a near hit. For a decoy, any in-scope family reported as
 a use anywhere in the planted tree is a `false_alarm`; reporting it as *not* a use (comment,
-ban) is correct. "In scope" follows the axis: a quantum row counts only quantum families
+ban) is correct. The axis belongs to the row, not to its family: a row with a `weakness`
+block is scored on the weak axis even when its family is a quantum one (RSA-1024, DH-1024,
+P-192 …; 38 such rows in 0.3.0, 36 positive and 2 decoys), and a `row_kind: defect` row on the
+defect axis ([`row_axis`](generator/shorlist/catalogue.py)). "In scope" follows the axis: a quantum row counts only quantum families
 (a reported MD5 is ignored), a weak row counts quantum and classically weak families. A
 defect row is scored on the CWE: `hit` when the scanner reports `defect.cwe` on the
 literal's line, `wrong_class` for another CWE there, `miss` otherwise; the fixed file is
@@ -316,16 +327,20 @@ Results are in [`results/live/`](results/live/).
 ## Results
 
 Measured on ShorList 0.3.0, catalogue sha256 `084dce514b73060b…`, with the same scanner versions
-as on 0.2.0. The 0.2.0 results stay in
+as on 0.2.0 (qci-pqc, new in 0.3.1, was not measured on 0.2.0). The 0.2.0 results stay in
 [`results/v0.2.0/`](results/v0.2.0/), the v0.1 results (30 rows, quantum axis only) in
 [`results/v0.1.1/`](results/v0.1.1/).
 
-For each scanner re-run here, the 2035 rows that 0.2.0 already had got the same outcome as on
+For each scanner re-run here from 0.2.0, the 2035 rows that 0.2.0 already had got the same outcome as on
 0.2.0, row by row; every change in a figure comes from the 64 new rows.
 
 A 0 here means the tool reported none of these forms in this setup; it is not a judgement of the tool for its own purpose.
 
 ### Source-code scanners
+
+Rows per axis: quantum 1429 positive and 172 decoys, weak 280 and 31, defect 162 and 25 (2099
+in all; the weak axis includes the 38 quantum-family rows with a `weakness` block, see
+[Scoring](#running-the-generator)).
 
 Quantum axis: 1429 positive forms, 172 decoys. **Without registry rows** leaves out the 552
 `registry_id` rows (IANA TLS, SSH, IKEv2, JOSE and COSE identifiers): a tool that builds its
@@ -339,11 +354,12 @@ are the fairer comparison. Both columns are always given.
 | qscan 1.0.0 ([EthanCratchley/qscan](https://github.com/EthanCratchley/qscan) @8b73799) | 82 | 37 | 16 | 0 | 54 (4) | 0 | [md](results/v0.3.0/qscan-1.0.0.md) |
 | cdxgen 13.6.0 (`cbom`) | 13 | 13 | 0 | 0 | 6 (0) | 0 | [md](results/v0.3.0/cdxgen-13.6.0.md) |
 | Semgrep 1.183.0 + semgrep-rules @16b9e6d | 0 | 0 | 0 | 0 | 33 (0) | 5 (+6 wrong class) | [md](results/v0.3.0/semgrep-1.183.0.md) |
+| qci-pqc 2.3.4.5 ([Quantum-Core-Institute-Inc/qci-pqc-scanner](https://github.com/Quantum-Core-Institute-Inc/qci-pqc-scanner) @3bb2298) | 162 | 149 | 16 | 4 | 77 (4) | 0 | [md](results/v0.3.0/qci-pqc-2.3.4.5.md) |
 
 Semgrep is the only tool that scores on the defect axis: 5 hits and 6 reports of the
 wrong CWE class on 162 wrong files, and 11 false alarms on the 162 fixed files planted beside
 them. Its 64 rule files look for misuse, not for which public-key algorithm is in use, so the
-0 on the quantum axis is expected. The other four report no misuse; they are inventory tools.
+0 on the quantum axis is expected. The other five report no misuse; they are inventory tools.
 The weak and defect axes did not change in 0.3.0 (all 64 new rows are quantum rows).
 
 Adapter caveats (unchanged since v0.1, details in each adapter): CryptoScan's `ECC` maps to
@@ -351,6 +367,16 @@ Adapter caveats (unchanged since v0.1, details in each adapter): CryptoScan's `E
 no role; cdxgen ran one fixed command, no `-t`, and its evidence step is skipped on trees
 that list no package; Semgrep's family comes from `check_id` tokens. cdxgen also lists three of the new
 PEM files (SL-3641, SL-3642, SL-3646) without a line: `file_only`, not a hit.
+
+qci-pqc (added in ShorList 0.3.1, measured on catalogue 0.3.0 like the rows above) is MIT-licensed;
+its adapter only runs it and parses its CycloneDX output. It names an EC key and ECDH "ECDSA":
+42 of its 53 wrong families are that (an expected EC reported as ECDSA 24, an expected ECDH 18),
+which the strict `parent_only` rule (see [Scoring](#running-the-generator)) counts as wrong. Its
+risk categories ("DH/ECDH", "Hybrid-Named", …) are left unmapped, as QCI's own benchmark adapter
+leaves them; its TLS cipher-suite names are left unmapped too, because ShorList has no suite
+family (QCI's benchmark adapter passes suites through). Of its 16 false alarms on decoys, 6 are ban lists, 5 log strings,
+4 removal lists and 1 a comment. 1123 of its 1210 quantum misses have no record from it at all in
+the planted tree.
 
 ### Tools not designed for source trees
 
@@ -367,13 +393,20 @@ The PEM rows carry real throwaway keys (see [Test keys](#test-keys)); with place
 both tools reported 0 because they could not parse the key, not because they missed it.
 
 The open-source scanners were run in throwaway containers with no network during the scan;
-images, versions and invocations are recorded in each adapter and result file. Semgrep and
+images, versions and invocations are recorded in each adapter and result file. qci-pqc was the
+exception: it ran from a clean clone of its repository at 3bb2298 (tag v2.3.4.5) in a Python
+virtual environment of its own (click 8.5.1, cryptography 50.0.2), as
+`qci-pqc scan TREE --reproducible --adapter internal --out DIR`, on the host and not in a
+container, so with no network isolation; the adapter reads `DIR/cbom.json`. It ran in 4 shards,
+merged with `shorlist merge`. A second run on 2026-11-15, from a fresh clone of the scanner and a
+clean ShorList checkout, gave the same fingerprint (`82b465530894ae22…`). The result records the
+command as `qci-pqc`, the name of a launcher for that clone. Semgrep and
 cdxgen were run on GitHub's runners in 12 shards
 ([`measure.yml`](.github/workflows/measure.yml)) and merged with `shorlist merge`; the merged
 result is the one an unsharded run gives. Where a scanner's output has no role, the scorer
 takes the family's intrinsic role from `families.yaml`, so `role_ok` is not evidence about
 that scanner; where it has no size, `size_ok` reads "no", meaning not reported. No row ended
-in `scanner_error` in any run, on 0.2.0 or on 0.3.0. Not measured: IBM sonar-cryptography (needs a
+in `scanner_error` in any run, on 0.2.0 or on 0.3.0 (qci-pqc included). Not measured: IBM sonar-cryptography (needs a
 SonarQube server) and CBOMkit (a service that clones a repository by URL).
 
 **Read qrp-mcp's row with its limits.** qrp-mcp is written by the author of ShorList (see
@@ -468,6 +501,22 @@ a fix is proposed in
 of writing. The declaration adapter reads these fields from the document the tool was given,
 so the scores above do not depend on the loss.
 
+## What changed in 0.3.1
+
+- **No catalogue change.** The rows are those of 0.3.0; the catalogue sha256 is still
+  `084dce514b73060b…`, so every result in [`results/v0.3.0/`](results/v0.3.0/) holds for 0.3.1.
+- **A new scanner, qci-pqc 2.3.4.5** (QCI, MIT): an adapter in
+  [`adapters/qci_pqc.py`](generator/shorlist/adapters/qci_pqc.py) and a row in the
+  [Results](#source-code-scanners) table: 162 of 1429 quantum forms, 16 of 172 decoys reported.
+- **README**: the Scoring paragraph says that the axis belongs to the row (38 quantum-family
+  rows with a `weakness` block are on the weak axis) and that `parent_only` is strict; the
+  Results give the rows per axis; [What it does not measure](#what-it-does-not-measure) says that
+  hybrids are scored on the post-quantum half only; [Why](#why) names QCI's CBOM-Benchmark.
+- **CITATION.cff and .zenodo.json** say "An open catalogue", as the README does.
+- **Generator version stays 0.3.0.** Scoring did not change, and the generator version is part of
+  every fingerprint: keeping it lets this release reproduce each 0.3.0 fingerprint, qci-pqc's
+  included. The catalogue version (`VERSION`) is 0.3.1.
+
 ## What changed in 0.3.0
 
 - **64 rows** (2035 → 2099), all on the quantum axis: 61 positive, 3 decoys.
@@ -514,7 +563,7 @@ from people with no tie to Elkan Electronic are explicitly sought.
 
 See [`CITATION.cff`](CITATION.cff).
 
-> Tenev, S. *ShorList: an open catalogue of cryptographic forms*, version 0.3.0, 2026.
+> Tenev, S. *ShorList: an open catalogue of cryptographic forms*, version 0.3.1, 2026.
 > Zenodo. https://doi.org/10.5281/zenodo.23974515
 
 ## Licences

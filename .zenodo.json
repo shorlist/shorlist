@@ -1,7 +1,7 @@
 {
   "title": "ShorList: an open catalogue of cryptographic forms",
   "upload_type": "dataset",
-  "description": "<p>The open catalogue of the cryptographic forms Shor's algorithm breaks, and the post-quantum ones that replace them. Each row is one form in which a public-key algorithm appears in source code or configuration, with a minimal context file, the expected detection and a primary source; decoy rows measure false alarms. A generator plants each row and scores a scanner's output against it, repeatably.</p><p>Catalogue data: CC BY 4.0. Generator and tests: Apache-2.0 (see LICENSE in the archive).</p><p>Not recall, not finding in a real tree, not misuse. See the README for the limits.</p>",
+  "description": "<p>An open catalogue of the cryptographic forms Shor's algorithm breaks, and the post-quantum ones that replace them. Each row is one form in which a public-key algorithm appears in source code or configuration, with a minimal context file, the expected detection and a primary source; decoy rows measure false alarms. A generator plants each row and scores a scanner's output against it, repeatably.</p><p>Catalogue data: CC BY 4.0. Generator and tests: Apache-2.0 (see LICENSE in the archive).</p><p>Not recall, not finding in a real tree, not misuse. See the README for the limits.</p>",
   "creators": [
     {"name": "Tenev, Stanimir", "affiliation": "Elkan Electronic"}
   ],
