@@ -67,16 +67,19 @@ way; see [Running the generator](#running-the-generator) for the full options.
 ## Why
 
 Cryptographic inventories (CBOMs) are produced by scanners, and a scanner's output says
-what it found, not what it could not read. Shared test sets exist for crypto-API misuse
-(CryptoAPI-Bench, CamBench, OWASP Benchmark) and a few small quantum-labelled corpora, but
-we know of no open list of the forms in code and configuration, scored on a quantum axis of
-its own, with decoys and a primary source on every row, to measure against.
+what it found, and seldom what it could not read. Shared test sets exist for crypto-API misuse
+(CryptoAPI-Bench, CamBench, OWASP Benchmark), a few small quantum-labelled corpora, and since
+November 2026 QCI's [CBOM-Benchmark](https://github.com/Quantum-Core-Institute-Inc/CBOM-Benchmark)
+(Apache-2.0): 410 graded findings in hand-written programs, keys, certificates and configs,
+with negative files and PQC-washing decoys, scored from a CycloneDX CBOM. We know of no open
+list of *forms* — one form per row, in its own minimal file, with a primary source on every
+row — scored on a quantum axis of its own, to measure against.
 The national guidance documents that come closest say so explicitly: BSI TR-02102-1
 (2026-01) states that "no claim is made to completeness", and ANSSI's guide to the
 selection of cryptographic algorithms (PA-079, v1.0) says of its list that it is "ni
 exhaustive, ni limitative". Registries such as
 IANA's and CycloneDX's `cryptography-defs.json` enumerate names, not the forms in which
-those names occur in code. ShorList is an attempt at that missing denominator, small and
+those names occur in code. ShorList is an attempt at such a denominator, small and
 checkable first.
 
 ## The unit of measure
